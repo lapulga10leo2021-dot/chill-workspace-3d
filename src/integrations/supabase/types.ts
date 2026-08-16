@@ -14,7 +14,254 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      backgrounds: {
+        Row: {
+          created_at: string
+          file_path: string
+          id: string
+          is_shared: boolean
+          media_type: string
+          preview_url: string | null
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          file_path: string
+          id?: string
+          is_shared?: boolean
+          media_type?: string
+          preview_url?: string | null
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          file_path?: string
+          id?: string
+          is_shared?: boolean
+          media_type?: string
+          preview_url?: string | null
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      documents: {
+        Row: {
+          created_at: string
+          file_path: string
+          folder: string
+          id: string
+          mime_type: string | null
+          name: string
+          size_bytes: number | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          file_path: string
+          folder?: string
+          id?: string
+          mime_type?: string | null
+          name: string
+          size_bytes?: number | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          file_path?: string
+          folder?: string
+          id?: string
+          mime_type?: string | null
+          name?: string
+          size_bytes?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      focus_sessions: {
+        Row: {
+          created_at: string
+          duration_minutes: number
+          ended_at: string | null
+          id: string
+          label: string | null
+          mode: string
+          started_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          duration_minutes?: number
+          ended_at?: string | null
+          id?: string
+          label?: string | null
+          mode?: string
+          started_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          duration_minutes?: number
+          ended_at?: string | null
+          id?: string
+          label?: string | null
+          mode?: string
+          started_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      playlists: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          active_background_id: string | null
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          lights_on: boolean
+          master_volume: number
+          outdoor_weather: string
+          show_clock: boolean
+          show_stopwatch: boolean
+          updated_at: string
+        }
+        Insert: {
+          active_background_id?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id: string
+          lights_on?: boolean
+          master_volume?: number
+          outdoor_weather?: string
+          show_clock?: boolean
+          show_stopwatch?: boolean
+          updated_at?: string
+        }
+        Update: {
+          active_background_id?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          lights_on?: boolean
+          master_volume?: number
+          outdoor_weather?: string
+          show_clock?: boolean
+          show_stopwatch?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      room_items: {
+        Row: {
+          created_at: string
+          id: string
+          item_key: string
+          rotation: number
+          scale: number
+          updated_at: string
+          user_id: string
+          x: number
+          y: number
+          z_index: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          item_key: string
+          rotation?: number
+          scale?: number
+          updated_at?: string
+          user_id: string
+          x?: number
+          y?: number
+          z_index?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          item_key?: string
+          rotation?: number
+          scale?: number
+          updated_at?: string
+          user_id?: string
+          x?: number
+          y?: number
+          z_index?: number
+        }
+        Relationships: []
+      }
+      tracks: {
+        Row: {
+          artist: string | null
+          category: string
+          created_at: string
+          duration_seconds: number | null
+          file_path: string
+          id: string
+          is_shared: boolean
+          playlist_id: string | null
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          artist?: string | null
+          category?: string
+          created_at?: string
+          duration_seconds?: number | null
+          file_path: string
+          id?: string
+          is_shared?: boolean
+          playlist_id?: string | null
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          artist?: string | null
+          category?: string
+          created_at?: string
+          duration_seconds?: number | null
+          file_path?: string
+          id?: string
+          is_shared?: boolean
+          playlist_id?: string | null
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tracks_playlist_id_fkey"
+            columns: ["playlist_id"]
+            isOneToOne: false
+            referencedRelation: "playlists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
