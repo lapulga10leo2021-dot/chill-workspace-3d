@@ -217,7 +217,9 @@ function DeskPage() {
             <SheetContent className="w-full overflow-y-auto sm:max-w-md">
               <SheetHeader>
                 <SheetTitle>Tuỳ chỉnh phòng</SheetTitle>
-                <SheetDescription>Nền động, thời tiết ngoài trời, đồng hồ và âm thanh.</SheetDescription>
+                <SheetDescription>
+                  Nền động, thời tiết ngoài trời, đồng hồ và âm thanh.
+                </SheetDescription>
               </SheetHeader>
 
               <div className="space-y-7 px-4 pb-10">
