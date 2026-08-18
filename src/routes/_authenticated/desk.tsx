@@ -1,21 +1,8 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import {
-  BarChart3,
-  BookOpen,
-  CloudRain,
-  Lamp,
-  ListMusic,
-  Loader2,
-  LogOut,
-  Music2,
-  Pause,
-  Play,
-  Settings2,
-  Upload,
-} from "lucide-react";
+import { Lamp, Loader2, LogOut, Music2, Settings2, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { signedUrl, useSession } from "@/lib/session";
 import { asWeather, useProfile, useUpdateProfile } from "@/lib/profile";
@@ -23,6 +10,7 @@ import { getAmbient, type AmbientKind } from "@/lib/ambient";
 import { WeatherLayer, WEATHER_LABELS, type Weather } from "@/components/room/WeatherLayer";
 import { RealtimeClock } from "@/components/room/RealtimeClock";
 import { Stopwatch } from "@/components/room/Stopwatch";
+import { Hotspot, RoomStage } from "@/components/room/RoomStage";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
@@ -125,7 +113,7 @@ function DeskPage() {
     const file = files[0]!;
     setUploadingBg(true);
     try {
-      const path = `${user.id}/${Date.now()}-${file.name.replace(/[^\w.\-]/g, "_")}`;
+      const path = `${user.id}/${Date.now()}-${file.name.replace(/[^\w.-]/g, "_")}`;
       const { error: upErr } = await supabase.storage.from("backgrounds").upload(path, file);
       if (upErr) throw upErr;
       const { data, error } = await supabase
@@ -229,7 +217,9 @@ function DeskPage() {
             <SheetContent className="w-full overflow-y-auto sm:max-w-md">
               <SheetHeader>
                 <SheetTitle>Tuỳ chỉnh phòng</SheetTitle>
-                <SheetDescription>Nền động, thời tiết ngoài trời, đồng hồ và âm thanh.</SheetDescription>
+                <SheetDescription>
+                  Nền động, thời tiết ngoài trời, đồng hồ và âm thanh.
+                </SheetDescription>
               </SheetHeader>
 
               <div className="space-y-7 px-4 pb-10">
@@ -347,66 +337,72 @@ function DeskPage() {
         </div>
       </header>
 
-      {/* Đồng hồ + bấm giờ */}
-      <section className="relative mx-auto mt-6 flex w-full max-w-md flex-col gap-5 px-5">
+      {/* Vật dụng bấm được trên bàn */}
+      <RoomStage>
         {showClock && (
-          <div className="glass-panel lamp-glow rounded-2xl p-6">
-            <RealtimeClock />
+          <div
+            className="pointer-events-none absolute"
+            style={{ left: "37.5%", top: "36%", width: "12%" }}
+          >
+            <div className="glass-panel lamp-glow rounded-xl px-2 py-1.5 [transform:rotate(-3deg)]">
+              <RealtimeClock compact />
+            </div>
           </div>
         )}
-        {showStopwatch && (
-          <div className="glass-panel rounded-2xl p-6">
+
+        <Hotspot
+          label="Giá sách — Thư viện tài liệu"
+          area={{ left: 6, top: 14, width: 22, height: 58 }}
+          onClick={() => void navigate({ to: "/library" })}
+        />
+        <Hotspot
+          label="Màn hình — Thống kê"
+          area={{ left: 51, top: 22, width: 19, height: 30 }}
+          onClick={() => void navigate({ to: "/stats" })}
+        />
+        <Hotspot
+          label="Tai nghe — Playlist nhạc"
+          area={{ left: 67.5, top: 45, width: 6.5, height: 13 }}
+          onClick={() => void navigate({ to: "/music" })}
+        />
+        <Hotspot
+          label={`Cửa sổ — ${WEATHER_LABELS[weather]}`}
+          area={{ left: 73, top: 1, width: 25, height: 32 }}
+          onClick={() => {
+            const next = WEATHERS[(WEATHERS.indexOf(weather) + 1) % WEATHERS.length]!;
+            updateProfile.mutate({ outdoor_weather: next });
+            toast.success(`Ngoài trời: ${WEATHER_LABELS[next]}`);
+          }}
+        />
+        <Hotspot
+          label={lightsOn ? "Đèn bàn — Tắt đèn" : "Đèn bàn — Bật đèn"}
+          area={{ left: 73.5, top: 33, width: 9, height: 14 }}
+          onClick={() => updateProfile.mutate({ lights_on: !lightsOn })}
+        />
+        <Hotspot
+          label={showStopwatch ? "Bàn phím — Ẩn bấm giờ" : "Bàn phím — Đồng hồ bấm giờ"}
+          area={{ left: 48.5, top: 47, width: 13, height: 9 }}
+          onClick={() => updateProfile.mutate({ show_stopwatch: !showStopwatch })}
+        />
+        <Hotspot
+          label="Loa — Nhạc gốc (mưa / piano)"
+          area={{ left: 41.5, top: 27, width: 6, height: 14 }}
+          onClick={() => toggleAmbient(ambient === "rain" ? "piano" : "rain")}
+        />
+      </RoomStage>
+
+      {/* Đồng hồ bấm giờ hiện khi bấm vào bàn phím */}
+      {showStopwatch && (
+        <section className="relative mx-auto mt-6 w-full max-w-sm px-5">
+          <div className="glass-panel rounded-2xl p-5">
             <Stopwatch onSave={(m) => void saveSession(m)} />
           </div>
-        )}
-      </section>
+        </section>
+      )}
 
-      {/* Nhạc gốc */}
-      <section className="relative mx-auto mt-8 w-full max-w-md px-5">
-        <div className="glass-panel rounded-2xl p-5">
-          <p className="text-xs uppercase tracking-wider text-muted-foreground">Nhạc gốc</p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            <Button
-              size="sm"
-              variant={ambient === "rain" ? "default" : "secondary"}
-              onClick={() => toggleAmbient("rain")}
-            >
-              {ambient === "rain" ? <Pause className="size-4" /> : <CloudRain className="size-4" />}
-              Tiếng mưa rơi
-            </Button>
-            <Button
-              size="sm"
-              variant={ambient === "piano" ? "default" : "secondary"}
-              onClick={() => toggleAmbient("piano")}
-            >
-              {ambient === "piano" ? <Pause className="size-4" /> : <Play className="size-4" />}
-              Piano nhẹ
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Các tab riêng */}
-      <nav className="relative mx-auto mt-8 grid w-full max-w-md grid-cols-3 gap-3 px-5 pb-12">
-        {[
-          { to: "/music", label: "Playlist nhạc", icon: ListMusic },
-          { to: "/library", label: "Thư viện tài liệu", icon: BookOpen },
-          { to: "/stats", label: "Thống kê", icon: BarChart3 },
-        ].map(({ to, label, icon: Icon }) => (
-          <Link
-            key={to}
-            to={to}
-            className="glass-panel flex flex-col items-center gap-2 rounded-xl p-4 text-center text-xs transition-transform hover:-translate-y-0.5"
-          >
-            <Icon className="size-5 text-primary" />
-            {label}
-          </Link>
-        ))}
-      </nav>
-
-      <p className="relative pb-8 text-center text-[11px] text-muted-foreground">
+      <p className="pointer-events-none absolute bottom-5 left-0 right-0 text-center text-[11px] text-muted-foreground">
         <Music2 className="mr-1 inline size-3" />
-        Nhạc bạn tải lên nằm trong tab Playlist. Sắp tới: kéo-thả vật dụng 3D lên bàn.
+        Bấm vào vật dụng: giá sách, màn hình, tai nghe, cửa sổ, đèn, bàn phím
         <Lamp className="ml-1 inline size-3" />
       </p>
     </main>
