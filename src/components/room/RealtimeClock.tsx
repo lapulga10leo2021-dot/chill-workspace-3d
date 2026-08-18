@@ -19,7 +19,7 @@ export function RealtimeClock({ compact = false }: { compact?: boolean }) {
   return (
     <div className="text-center">
       <div
-        className={`font-display tabular-nums ${compact ? "text-2xl" : "text-5xl"} text-warm-gradient`}
+        className={`font-display whitespace-nowrap tabular-nums ${compact ? "text-[clamp(0.75rem,1.6vw,1.5rem)]" : "text-5xl"} text-warm-gradient`}
       >
         {time}
       </div>
