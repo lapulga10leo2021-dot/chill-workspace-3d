@@ -113,7 +113,7 @@ function DeskPage() {
     const file = files[0]!;
     setUploadingBg(true);
     try {
-      const path = `${user.id}/${Date.now()}-${file.name.replace(/[^\w.\-]/g, "_")}`;
+      const path = `${user.id}/${Date.now()}-${file.name.replace(/[^\w.-]/g, "_")}`;
       const { error: upErr } = await supabase.storage.from("backgrounds").upload(path, file);
       if (upErr) throw upErr;
       const { data, error } = await supabase
