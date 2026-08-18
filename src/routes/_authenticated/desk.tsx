@@ -23,6 +23,7 @@ import { getAmbient, type AmbientKind } from "@/lib/ambient";
 import { WeatherLayer, WEATHER_LABELS, type Weather } from "@/components/room/WeatherLayer";
 import { RealtimeClock } from "@/components/room/RealtimeClock";
 import { Stopwatch } from "@/components/room/Stopwatch";
+import { Hotspot, RoomStage } from "@/components/room/RoomStage";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
