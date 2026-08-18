@@ -1,10 +1,17 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 /**
- * Khớp toạ độ vật dụng với ảnh nền dạng object-cover.
- * Ảnh nền gốc tỉ lệ 16/9 (1920x1080) nên hotspot dùng % theo khung 16/9.
+ * Sân khấu phòng làm việc: nền và các vật dụng bấm được nằm chung một khung
+ * tỉ lệ 16/9 (ảnh nền gốc 1920x1080) nên toạ độ hotspot luôn khớp với đồ vật.
+ * Khung được thu vừa màn hình (contain) để thấy trọn cả bàn, giá sách và cửa sổ.
  */
-export function RoomStage({ children }: { children: ReactNode }) {
+export function RoomStage({
+  background,
+  children,
+}: {
+  background?: ReactNode;
+  children: ReactNode;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [box, setBox] = useState({ w: 0, h: 0 });
 
@@ -13,7 +20,8 @@ export function RoomStage({ children }: { children: ReactNode }) {
     if (!el) return;
     const update = () => {
       const { width, height } = el.getBoundingClientRect();
-      const scale = Math.max(width / 1920, height / 1080);
+      if (!width || !height) return;
+      const scale = Math.min(width / 1920, height / 1080);
       setBox({ w: 1920 * scale, h: 1080 * scale });
     };
     update();
@@ -28,6 +36,7 @@ export function RoomStage({ children }: { children: ReactNode }) {
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
         style={{ width: box.w || "100%", height: box.h || "100%" }}
       >
+        {background}
         {children}
       </div>
     </div>
