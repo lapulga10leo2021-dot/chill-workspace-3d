@@ -171,9 +171,8 @@ function DeskPage() {
     <main className="relative min-h-screen overflow-hidden">
       <WeatherLayer weather={weather} />
 
-
       {/* Thanh trên */}
-      <header className="relative flex items-center justify-between gap-3 px-5 py-4">
+      <header className="relative z-20 flex items-center justify-between gap-3 px-5 py-4">
         <p className="font-display text-sm tracking-[0.25em] text-primary">LOFI DESKSPACE</p>
         <div className="flex items-center gap-2">
           <Sheet>
