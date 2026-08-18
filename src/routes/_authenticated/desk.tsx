@@ -169,43 +169,10 @@ function DeskPage() {
 
   return (
     <main className="relative min-h-screen overflow-hidden">
-      {/* Nền phòng: video/ảnh động do bạn hoặc người dùng tải lên */}
-      {bgUrl && activeBg?.media_type === "video" ? (
-        <video
-          key={bgUrl}
-          src={bgUrl}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 size-full object-cover"
-        />
-      ) : (
-        <img
-          src={bgUrl ?? roomNight}
-          alt="Phòng làm việc với bàn, màn hình, giá sách và cửa sổ"
-          className="absolute inset-0 size-full object-cover"
-          style={{ animation: "drift 40s ease-in-out infinite alternate" }}
-        />
-      )}
-
       <WeatherLayer weather={weather} />
 
-      {/* Đèn bàn */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 transition-opacity duration-700"
-        style={{
-          background: lightsOn
-            ? "radial-gradient(520px 380px at 74% 58%, oklch(0.85 0.12 70 / 26%), transparent 72%)"
-            : "oklch(0.1 0.02 292 / 55%)",
-          animation: lightsOn ? "flicker 6s ease-in-out infinite" : undefined,
-        }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/45 via-transparent to-background/80" />
-
       {/* Thanh trên */}
-      <header className="relative flex items-center justify-between gap-3 px-5 py-4">
+      <header className="relative z-20 flex items-center justify-between gap-3 px-5 py-4">
         <p className="font-display text-sm tracking-[0.25em] text-primary">LOFI DESKSPACE</p>
         <div className="flex items-center gap-2">
           <Sheet>
@@ -337,12 +304,45 @@ function DeskPage() {
         </div>
       </header>
 
-      {/* Vật dụng bấm được trên bàn */}
-      <RoomStage>
+      {/* Nền phòng + vật dụng bấm được, cùng một khung toạ độ */}
+      <RoomStage
+        background={
+          <>
+            {bgUrl && activeBg?.media_type === "video" ? (
+              <video
+                key={bgUrl}
+                src={bgUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 size-full object-cover"
+              />
+            ) : (
+              <img
+                src={bgUrl ?? roomNight}
+                alt="Phòng làm việc với bàn, màn hình, giá sách, đèn và cửa sổ"
+                className="absolute inset-0 size-full object-cover"
+              />
+            )}
+            {/* Đèn bàn */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 transition-opacity duration-700"
+              style={{
+                background: lightsOn
+                  ? "radial-gradient(34% 34% at 76% 46%, oklch(0.85 0.12 70 / 30%), transparent 72%)"
+                  : "oklch(0.1 0.02 292 / 58%)",
+                animation: lightsOn ? "flicker 6s ease-in-out infinite" : undefined,
+              }}
+            />
+          </>
+        }
+      >
         {showClock && (
           <div
             className="pointer-events-none absolute"
-            style={{ left: "37.5%", top: "36%", width: "12%" }}
+            style={{ left: "33%", top: "43%", width: "10.5%" }}
           >
             <div className="glass-panel lamp-glow rounded-xl px-2 py-1.5 [transform:rotate(-3deg)]">
               <RealtimeClock compact />

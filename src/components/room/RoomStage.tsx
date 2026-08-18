@@ -1,20 +1,30 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 /**
- * Khớp toạ độ vật dụng với ảnh nền dạng object-cover.
- * Ảnh nền gốc tỉ lệ 16/9 (1920x1080) nên hotspot dùng % theo khung 16/9.
+ * Sân khấu phòng làm việc: nền và các vật dụng bấm được nằm chung một khung
+ * tỉ lệ 16/9 (ảnh nền gốc 1920x1080) nên toạ độ hotspot luôn khớp với đồ vật.
+ * Khung được thu vừa màn hình (contain) để thấy trọn cả bàn, giá sách và cửa sổ.
  */
-export function RoomStage({ children }: { children: ReactNode }) {
+export function RoomStage({
+  background,
+  children,
+}: {
+  background?: ReactNode;
+  children: ReactNode;
+}) {
   const ref = useRef<HTMLDivElement>(null);
-  const [box, setBox] = useState({ w: 0, h: 0 });
+  const [box, setBox] = useState({ w: 0, h: 0, scroll: false });
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const update = () => {
       const { width, height } = el.getBoundingClientRect();
-      const scale = Math.max(width / 1920, height / 1080);
-      setBox({ w: 1920 * scale, h: 1080 * scale });
+      if (!width || !height) return;
+      // Màn hình dọc/hẹp: lấp đầy chiều cao và cho cuộn ngang để đồ vật đủ lớn.
+      const narrow = width / height < 1.35;
+      const scale = narrow ? height / 1080 : Math.min(width / 1920, height / 1080);
+      setBox({ w: 1920 * scale, h: 1080 * scale, scroll: narrow });
     };
     update();
     const ro = new ResizeObserver(update);
@@ -22,12 +32,27 @@ export function RoomStage({ children }: { children: ReactNode }) {
     return () => ro.disconnect();
   }, []);
 
+  // Cuộn sẵn tới khu vực bàn làm việc trên màn hình hẹp.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || !box.scroll || !box.w) return;
+    el.scrollLeft = Math.max(0, box.w * 0.62 - el.clientWidth / 2);
+  }, [box.scroll, box.w]);
+
   return (
-    <div ref={ref} className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div
+      ref={ref}
+      className={`absolute inset-0 ${box.scroll ? "pointer-events-auto overflow-x-auto overflow-y-hidden" : "pointer-events-none overflow-hidden"}`}
+    >
       <div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        className={
+          box.scroll
+            ? "relative h-full"
+            : "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        }
         style={{ width: box.w || "100%", height: box.h || "100%" }}
       >
+        {background}
         {children}
       </div>
     </div>
