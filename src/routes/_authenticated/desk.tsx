@@ -1,21 +1,8 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import {
-  BarChart3,
-  BookOpen,
-  CloudRain,
-  Lamp,
-  ListMusic,
-  Loader2,
-  LogOut,
-  Music2,
-  Pause,
-  Play,
-  Settings2,
-  Upload,
-} from "lucide-react";
+import { Lamp, Loader2, LogOut, Music2, Settings2, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { signedUrl, useSession } from "@/lib/session";
 import { asWeather, useProfile, useUpdateProfile } from "@/lib/profile";
