@@ -169,40 +169,8 @@ function DeskPage() {
 
   return (
     <main className="relative min-h-screen overflow-hidden">
-      {/* Nền phòng: video/ảnh động do bạn hoặc người dùng tải lên */}
-      {bgUrl && activeBg?.media_type === "video" ? (
-        <video
-          key={bgUrl}
-          src={bgUrl}
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 size-full object-cover"
-        />
-      ) : (
-        <img
-          src={bgUrl ?? roomNight}
-          alt="Phòng làm việc với bàn, màn hình, giá sách và cửa sổ"
-          className="absolute inset-0 size-full object-cover"
-          style={{ animation: "drift 40s ease-in-out infinite alternate" }}
-        />
-      )}
-
       <WeatherLayer weather={weather} />
 
-      {/* Đèn bàn */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 transition-opacity duration-700"
-        style={{
-          background: lightsOn
-            ? "radial-gradient(520px 380px at 74% 58%, oklch(0.85 0.12 70 / 26%), transparent 72%)"
-            : "oklch(0.1 0.02 292 / 55%)",
-          animation: lightsOn ? "flicker 6s ease-in-out infinite" : undefined,
-        }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/45 via-transparent to-background/80" />
 
       {/* Thanh trên */}
       <header className="relative flex items-center justify-between gap-3 px-5 py-4">
