@@ -305,8 +305,41 @@ function DeskPage() {
         </div>
       </header>
 
-      {/* Vật dụng bấm được trên bàn */}
-      <RoomStage>
+      {/* Nền phòng + vật dụng bấm được, cùng một khung toạ độ */}
+      <RoomStage
+        background={
+          <>
+            {bgUrl && activeBg?.media_type === "video" ? (
+              <video
+                key={bgUrl}
+                src={bgUrl}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 size-full object-cover"
+              />
+            ) : (
+              <img
+                src={bgUrl ?? roomNight}
+                alt="Phòng làm việc với bàn, màn hình, giá sách, đèn và cửa sổ"
+                className="absolute inset-0 size-full object-cover"
+              />
+            )}
+            {/* Đèn bàn */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 transition-opacity duration-700"
+              style={{
+                background: lightsOn
+                  ? "radial-gradient(34% 34% at 76% 46%, oklch(0.85 0.12 70 / 30%), transparent 72%)"
+                  : "oklch(0.1 0.02 292 / 58%)",
+                animation: lightsOn ? "flicker 6s ease-in-out infinite" : undefined,
+              }}
+            />
+          </>
+        }
+      >
         {showClock && (
           <div
             className="pointer-events-none absolute"
