@@ -342,7 +342,7 @@ function DeskPage() {
         {showClock && (
           <div
             className="pointer-events-none absolute"
-            style={{ left: "33%", top: "43%", width: "10.5%" }}
+            style={{ left: "40.5%", top: "40%", width: "9.5%" }}
           >
             <div className="glass-panel lamp-glow rounded-xl px-2 py-1.5 [transform:rotate(-3deg)]">
               <RealtimeClock compact />
