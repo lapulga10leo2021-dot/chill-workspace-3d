@@ -46,6 +46,7 @@ export const Route = createFileRoute("/_authenticated/desk")({
 });
 
 const WEATHERS: Weather[] = ["rain", "clear", "snow", "autumn", "night"];
+const WINDOW_AREA = { left: 73, top: 1, width: 25, height: 32 };
 
 function DeskPage() {
   const { user } = useSession();
