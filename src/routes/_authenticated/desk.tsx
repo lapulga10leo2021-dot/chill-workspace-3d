@@ -169,7 +169,6 @@ function DeskPage() {
 
   return (
     <main className="relative min-h-screen overflow-hidden">
-      <WeatherLayer weather={weather} />
 
       {/* Thanh trên */}
       <header className="relative z-20 flex items-center justify-between gap-3 px-5 py-4">
@@ -380,9 +379,9 @@ function DeskPage() {
           onClick={() => updateProfile.mutate({ lights_on: !lightsOn })}
         />
         <Hotspot
-          label={showStopwatch ? "Bàn phím — Ẩn bấm giờ" : "Bàn phím — Đồng hồ bấm giờ"}
+          label="Bàn phím — Test bàn phím"
           area={{ left: 48.5, top: 47, width: 13, height: 9 }}
-          onClick={() => updateProfile.mutate({ show_stopwatch: !showStopwatch })}
+          onClick={() => void navigate({ to: "/keyboard" })}
         />
         <Hotspot
           label="Loa — Nhạc gốc (mưa / piano)"
