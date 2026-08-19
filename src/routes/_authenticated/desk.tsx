@@ -7,7 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { signedUrl, useSession } from "@/lib/session";
 import { asWeather, useProfile, useUpdateProfile } from "@/lib/profile";
 import { getAmbient, type AmbientKind } from "@/lib/ambient";
-import { WeatherLayer, WEATHER_LABELS, type Weather } from "@/components/room/WeatherLayer";
+import { WEATHER_LABELS, type Weather } from "@/components/room/WeatherLayer";
+import { OutdoorView } from "@/components/room/OutdoorView";
 import { RealtimeClock } from "@/components/room/RealtimeClock";
 import { Stopwatch } from "@/components/room/Stopwatch";
 import { Hotspot, RoomStage } from "@/components/room/RoomStage";
@@ -323,6 +324,10 @@ function DeskPage() {
                 alt="Phòng làm việc với bàn, màn hình, giá sách, đèn và cửa sổ"
                 className="absolute inset-0 size-full object-cover"
               />
+            )}
+            {/* Khung cảnh ngoài trời trong ô cửa sổ */}
+            {!bgUrl && (
+              <OutdoorView weather={weather} area={WINDOW_AREA} />
             )}
             {/* Đèn bàn */}
             <div
