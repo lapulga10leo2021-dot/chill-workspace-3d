@@ -372,7 +372,7 @@ function DeskPage() {
         />
         <Hotspot
           label={`Cửa sổ — ${WEATHER_LABELS[weather]}`}
-          area={{ left: 73, top: 1, width: 25, height: 32 }}
+          area={WINDOW_AREA}
           onClick={() => {
             const next = WEATHERS[(WEATHERS.indexOf(weather) + 1) % WEATHERS.length]!;
             updateProfile.mutate({ outdoor_weather: next });
