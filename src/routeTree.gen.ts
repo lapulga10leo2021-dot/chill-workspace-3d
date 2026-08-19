@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedDeskRouteImport } from './routes/_authenticated/desk'
+import { Route as AuthenticatedKeyboardRouteImport } from './routes/_authenticated/keyboard'
 import { Route as AuthenticatedLibraryRouteImport } from './routes/_authenticated/library'
 import { Route as AuthenticatedMusicRouteImport } from './routes/_authenticated/music'
 import { Route as AuthenticatedStatsRouteImport } from './routes/_authenticated/stats'
@@ -36,6 +37,11 @@ const AuthenticatedDeskRoute = AuthenticatedDeskRouteImport.update({
   path: '/desk',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedKeyboardRoute = AuthenticatedKeyboardRouteImport.update({
+  id: '/keyboard',
+  path: '/keyboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedLibraryRoute = AuthenticatedLibraryRouteImport.update({
   id: '/library',
   path: '/library',
@@ -56,6 +62,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/desk': typeof AuthenticatedDeskRoute
+  '/keyboard': typeof AuthenticatedKeyboardRoute
   '/library': typeof AuthenticatedLibraryRoute
   '/music': typeof AuthenticatedMusicRoute
   '/stats': typeof AuthenticatedStatsRoute
@@ -64,6 +71,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/desk': typeof AuthenticatedDeskRoute
+  '/keyboard': typeof AuthenticatedKeyboardRoute
   '/library': typeof AuthenticatedLibraryRoute
   '/music': typeof AuthenticatedMusicRoute
   '/stats': typeof AuthenticatedStatsRoute
@@ -74,21 +82,24 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/_authenticated/desk': typeof AuthenticatedDeskRoute
+  '/_authenticated/keyboard': typeof AuthenticatedKeyboardRoute
   '/_authenticated/library': typeof AuthenticatedLibraryRoute
   '/_authenticated/music': typeof AuthenticatedMusicRoute
   '/_authenticated/stats': typeof AuthenticatedStatsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/desk' | '/library' | '/music' | '/stats'
+  fullPaths:
+    '/' | '/auth' | '/desk' | '/keyboard' | '/library' | '/music' | '/stats'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/desk' | '/library' | '/music' | '/stats'
+  to: '/' | '/auth' | '/desk' | '/keyboard' | '/library' | '/music' | '/stats'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/auth'
     | '/_authenticated/desk'
+    | '/_authenticated/keyboard'
     | '/_authenticated/library'
     | '/_authenticated/music'
     | '/_authenticated/stats'
@@ -130,6 +141,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDeskRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/keyboard': {
+      id: '/_authenticated/keyboard'
+      path: '/keyboard'
+      fullPath: '/keyboard'
+      preLoaderRoute: typeof AuthenticatedKeyboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/library': {
       id: '/_authenticated/library'
       path: '/library'
@@ -156,6 +174,7 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDeskRoute: typeof AuthenticatedDeskRoute
+  AuthenticatedKeyboardRoute: typeof AuthenticatedKeyboardRoute
   AuthenticatedLibraryRoute: typeof AuthenticatedLibraryRoute
   AuthenticatedMusicRoute: typeof AuthenticatedMusicRoute
   AuthenticatedStatsRoute: typeof AuthenticatedStatsRoute
@@ -163,6 +182,7 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDeskRoute: AuthenticatedDeskRoute,
+  AuthenticatedKeyboardRoute: AuthenticatedKeyboardRoute,
   AuthenticatedLibraryRoute: AuthenticatedLibraryRoute,
   AuthenticatedMusicRoute: AuthenticatedMusicRoute,
   AuthenticatedStatsRoute: AuthenticatedStatsRoute,

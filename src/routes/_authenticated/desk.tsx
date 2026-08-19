@@ -7,7 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { signedUrl, useSession } from "@/lib/session";
 import { asWeather, useProfile, useUpdateProfile } from "@/lib/profile";
 import { getAmbient, type AmbientKind } from "@/lib/ambient";
-import { WeatherLayer, WEATHER_LABELS, type Weather } from "@/components/room/WeatherLayer";
+import { WEATHER_LABELS, type Weather } from "@/components/room/WeatherLayer";
+import { OutdoorView } from "@/components/room/OutdoorView";
 import { RealtimeClock } from "@/components/room/RealtimeClock";
 import { Stopwatch } from "@/components/room/Stopwatch";
 import { Hotspot, RoomStage } from "@/components/room/RoomStage";
@@ -45,6 +46,7 @@ export const Route = createFileRoute("/_authenticated/desk")({
 });
 
 const WEATHERS: Weather[] = ["rain", "clear", "snow", "autumn", "night"];
+const WINDOW_AREA = { left: 73, top: 1, width: 25, height: 32 };
 
 function DeskPage() {
   const { user } = useSession();
@@ -169,7 +171,6 @@ function DeskPage() {
 
   return (
     <main className="relative min-h-screen overflow-hidden">
-      <WeatherLayer weather={weather} />
 
       {/* Thanh trên */}
       <header className="relative z-20 flex items-center justify-between gap-3 px-5 py-4">
@@ -325,6 +326,10 @@ function DeskPage() {
                 className="absolute inset-0 size-full object-cover"
               />
             )}
+            {/* Khung cảnh ngoài trời trong ô cửa sổ */}
+            {!bgUrl && (
+              <OutdoorView weather={weather} area={WINDOW_AREA} />
+            )}
             {/* Đèn bàn */}
             <div
               aria-hidden
@@ -367,7 +372,7 @@ function DeskPage() {
         />
         <Hotspot
           label={`Cửa sổ — ${WEATHER_LABELS[weather]}`}
-          area={{ left: 73, top: 1, width: 25, height: 32 }}
+          area={WINDOW_AREA}
           onClick={() => {
             const next = WEATHERS[(WEATHERS.indexOf(weather) + 1) % WEATHERS.length]!;
             updateProfile.mutate({ outdoor_weather: next });
@@ -380,9 +385,9 @@ function DeskPage() {
           onClick={() => updateProfile.mutate({ lights_on: !lightsOn })}
         />
         <Hotspot
-          label={showStopwatch ? "Bàn phím — Ẩn bấm giờ" : "Bàn phím — Đồng hồ bấm giờ"}
+          label="Bàn phím — Test bàn phím"
           area={{ left: 48.5, top: 47, width: 13, height: 9 }}
-          onClick={() => updateProfile.mutate({ show_stopwatch: !showStopwatch })}
+          onClick={() => void navigate({ to: "/keyboard" })}
         />
         <Hotspot
           label="Loa — Nhạc gốc (mưa / piano)"
