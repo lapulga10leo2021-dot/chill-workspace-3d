@@ -47,9 +47,11 @@ export const Route = createFileRoute("/_authenticated/desk")({
 
 const WEATHERS: Weather[] = ["rain", "clear", "snow", "autumn", "night"];
 /** Ô kính lớn bên phải (vùng bấm để đổi thời tiết) */
-const WINDOW_AREA = { left: 74.8, top: 1.5, width: 20.8, height: 31 };
+const WINDOW_AREA = { left: 72.4, top: 0, width: 26.6, height: 47 };
 /** Các ô kính thật của cửa sổ trong ảnh phòng: phải + ô nhỏ phía trên màn hình */
-const WINDOW_PANES = [WINDOW_AREA, { left: 55.6, top: 1.5, width: 16.8, height: 18.5 }];
+const WINDOW_PANES = [WINDOW_AREA, { left: 56.4, top: 0, width: 12.9, height: 39 }];
+/** Đồng hồ điện tử trên bàn */
+const CLOCK_AREA = { left: 40, top: 39.5, width: 10.5, height: 8 };
 
 function DeskPage() {
   const { user } = useSession();
