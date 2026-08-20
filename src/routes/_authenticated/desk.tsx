@@ -350,14 +350,15 @@ function DeskPage() {
         }
       >
         {showClock && (
-          <div
-            className="pointer-events-none absolute"
-            style={{ left: "40.5%", top: "40%", width: "9.5%" }}
+          <Hotspot
+            label={showStopwatch ? "Đồng hồ — Ẩn bấm giờ" : "Đồng hồ — Bấm giờ"}
+            area={CLOCK_AREA}
+            onClick={() => updateProfile.mutate({ show_stopwatch: !showStopwatch })}
           >
-            <div className="glass-panel lamp-glow rounded-xl px-2 py-1.5 [transform:rotate(-3deg)]">
+            <span className="pointer-events-none absolute inset-0 flex items-center justify-center [transform:rotate(-3deg)]">
               <RealtimeClock compact />
-            </div>
-          </div>
+            </span>
+          </Hotspot>
         )}
 
         <Hotspot
