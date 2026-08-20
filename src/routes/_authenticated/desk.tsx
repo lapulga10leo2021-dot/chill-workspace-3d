@@ -46,7 +46,10 @@ export const Route = createFileRoute("/_authenticated/desk")({
 });
 
 const WEATHERS: Weather[] = ["rain", "clear", "snow", "autumn", "night"];
-const WINDOW_AREA = { left: 73, top: 1, width: 25, height: 32 };
+/** Ô kính lớn bên phải (vùng bấm để đổi thời tiết) */
+const WINDOW_AREA = { left: 74.8, top: 1.5, width: 20.8, height: 31 };
+/** Các ô kính thật của cửa sổ trong ảnh phòng: phải + ô nhỏ phía trên màn hình */
+const WINDOW_PANES = [WINDOW_AREA, { left: 55.6, top: 1.5, width: 16.8, height: 18.5 }];
 
 function DeskPage() {
   const { user } = useSession();
@@ -328,7 +331,7 @@ function DeskPage() {
             )}
             {/* Khung cảnh ngoài trời trong ô cửa sổ */}
             {!bgUrl && (
-              <OutdoorView weather={weather} area={WINDOW_AREA} />
+              <OutdoorView weather={weather} panes={WINDOW_PANES} />
             )}
             {/* Đèn bàn */}
             <div
