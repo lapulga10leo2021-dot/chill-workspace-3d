@@ -331,7 +331,7 @@ function DeskPage() {
             )}
             {/* Khung cảnh ngoài trời trong ô cửa sổ */}
             {!bgUrl && (
-              <OutdoorView weather={weather} area={WINDOW_AREA} />
+              <OutdoorView weather={weather} panes={WINDOW_PANES} />
             )}
             {/* Đèn bàn */}
             <div
