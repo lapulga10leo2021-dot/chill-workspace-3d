@@ -402,18 +402,26 @@ function DeskPage() {
         />
       </RoomStage>
 
-      {/* Đồng hồ bấm giờ hiện khi bấm vào bàn phím */}
+      {/* Đồng hồ bấm giờ nổi lên khi bấm vào đồng hồ trên bàn */}
       {showStopwatch && (
-        <section className="relative mx-auto mt-6 w-full max-w-sm px-5">
-          <div className="glass-panel rounded-2xl p-5">
+        <section className="pointer-events-none absolute inset-x-0 bottom-16 z-20 flex justify-center px-5">
+          <div className="glass-panel pointer-events-auto w-full max-w-sm rounded-2xl p-5">
             <Stopwatch onSave={(m) => void saveSession(m)} />
+            <Button
+              size="sm"
+              variant="ghost"
+              className="mt-2 w-full"
+              onClick={() => updateProfile.mutate({ show_stopwatch: false })}
+            >
+              Ẩn bấm giờ
+            </Button>
           </div>
         </section>
       )}
 
       <p className="pointer-events-none absolute bottom-5 left-0 right-0 text-center text-[11px] text-muted-foreground">
         <Music2 className="mr-1 inline size-3" />
-        Bấm vào vật dụng: giá sách, màn hình, tai nghe, cửa sổ, đèn, bàn phím
+        Bấm vào vật dụng: giá sách, màn hình, tai nghe, đồng hồ, cửa sổ, đèn, bàn phím
         <Lamp className="ml-1 inline size-3" />
       </p>
     </main>
