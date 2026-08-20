@@ -47,9 +47,11 @@ export const Route = createFileRoute("/_authenticated/desk")({
 
 const WEATHERS: Weather[] = ["rain", "clear", "snow", "autumn", "night"];
 /** Ô kính lớn bên phải (vùng bấm để đổi thời tiết) */
-const WINDOW_AREA = { left: 74.8, top: 1.5, width: 20.8, height: 31 };
+const WINDOW_AREA = { left: 72.6, top: 0, width: 25.9, height: 44 };
 /** Các ô kính thật của cửa sổ trong ảnh phòng: phải + ô nhỏ phía trên màn hình */
-const WINDOW_PANES = [WINDOW_AREA, { left: 55.6, top: 1.5, width: 16.8, height: 18.5 }];
+const WINDOW_PANES = [WINDOW_AREA, { left: 56.6, top: 0, width: 12.4, height: 34 }];
+/** Đồng hồ điện tử trên bàn */
+const CLOCK_AREA = { left: 38.5, top: 39, width: 10.5, height: 8 };
 
 function DeskPage() {
   const { user } = useSession();
@@ -348,14 +350,15 @@ function DeskPage() {
         }
       >
         {showClock && (
-          <div
-            className="pointer-events-none absolute"
-            style={{ left: "40.5%", top: "40%", width: "9.5%" }}
+          <Hotspot
+            label={showStopwatch ? "Đồng hồ — Ẩn bấm giờ" : "Đồng hồ — Bấm giờ"}
+            area={CLOCK_AREA}
+            onClick={() => updateProfile.mutate({ show_stopwatch: !showStopwatch })}
           >
-            <div className="glass-panel lamp-glow rounded-xl px-2 py-1.5 [transform:rotate(-3deg)]">
+            <span className="pointer-events-none absolute inset-0 flex items-center justify-center [transform:rotate(-3deg)]">
               <RealtimeClock compact />
-            </div>
-          </div>
+            </span>
+          </Hotspot>
         )}
 
         <Hotspot
@@ -399,18 +402,26 @@ function DeskPage() {
         />
       </RoomStage>
 
-      {/* Đồng hồ bấm giờ hiện khi bấm vào bàn phím */}
+      {/* Đồng hồ bấm giờ nổi lên khi bấm vào đồng hồ trên bàn */}
       {showStopwatch && (
-        <section className="relative mx-auto mt-6 w-full max-w-sm px-5">
-          <div className="glass-panel rounded-2xl p-5">
+        <section className="pointer-events-none absolute inset-x-0 bottom-16 z-20 flex justify-center px-5">
+          <div className="glass-panel pointer-events-auto w-full max-w-sm rounded-2xl p-5">
             <Stopwatch onSave={(m) => void saveSession(m)} />
+            <Button
+              size="sm"
+              variant="ghost"
+              className="mt-2 w-full"
+              onClick={() => updateProfile.mutate({ show_stopwatch: false })}
+            >
+              Ẩn bấm giờ
+            </Button>
           </div>
         </section>
       )}
 
       <p className="pointer-events-none absolute bottom-5 left-0 right-0 text-center text-[11px] text-muted-foreground">
         <Music2 className="mr-1 inline size-3" />
-        Bấm vào vật dụng: giá sách, màn hình, tai nghe, cửa sổ, đèn, bàn phím
+        Bấm vào vật dụng: giá sách, màn hình, tai nghe, đồng hồ, cửa sổ, đèn, bàn phím
         <Lamp className="ml-1 inline size-3" />
       </p>
     </main>

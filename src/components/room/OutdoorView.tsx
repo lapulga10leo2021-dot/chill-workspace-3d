@@ -13,19 +13,11 @@ const SCENES: Record<Weather, string> = {
   night: viewNight,
 };
 
-const ALT: Record<Weather, string> = {
-  clear: "Khung cảnh ngoài trời: nắng vàng",
-  rain: "Khung cảnh ngoài trời: phố mưa",
-  snow: "Khung cảnh ngoài trời: tuyết rơi",
-  autumn: "Khung cảnh ngoài trời: lá vàng mùa thu",
-  night: "Khung cảnh ngoài trời: thành phố về đêm",
-};
-
 export type Pane = { left: number; top: number; width: number; height: number };
 
 /**
  * Khung cảnh ngoài trời vẽ trực tiếp lên từng ô kính của cửa sổ.
- * Ảnh được hoà vào phòng (tối + mờ viền) nên không còn trông như một ô ảnh dán lên.
+ * Ảnh là chi tiết trang trí (alt rỗng) nên không bao giờ hiện chữ thay thế tràn ra phòng.
  */
 export function OutdoorView({ weather, panes }: { weather: Weather; panes: Pane[] }) {
   return (
@@ -33,6 +25,7 @@ export function OutdoorView({ weather, panes }: { weather: Weather; panes: Pane[
       {panes.map((p, i) => (
         <div
           key={i}
+          aria-hidden
           className="pointer-events-none absolute overflow-hidden"
           style={{
             left: `${p.left}%`,
@@ -40,30 +33,23 @@ export function OutdoorView({ weather, panes }: { weather: Weather; panes: Pane[
             width: `${p.width}%`,
             height: `${p.height}%`,
             WebkitMaskImage:
-              "radial-gradient(120% 120% at 50% 50%, black 60%, transparent 100%)",
-            maskImage: "radial-gradient(120% 120% at 50% 50%, black 60%, transparent 100%)",
+              "radial-gradient(125% 125% at 50% 45%, black 62%, transparent 100%)",
+            maskImage: "radial-gradient(125% 125% at 50% 45%, black 62%, transparent 100%)",
           }}
         >
-          {(Object.keys(SCENES) as Weather[]).map((w) => (
-            <img
-              key={w}
-              src={SCENES[w]}
-              alt={w === weather && i === 0 ? ALT[w] : ""}
-              loading="lazy"
-              width={1024}
-              height={720}
-              className={`absolute inset-0 size-full object-cover transition-opacity duration-700 ${
-                w === weather ? "opacity-100" : "opacity-0"
-              }`}
-              style={{ filter: "brightness(0.78) saturate(0.92) contrast(0.95)" }}
-            />
-          ))}
+          <img
+            key={weather}
+            src={SCENES[weather]}
+            alt=""
+            decoding="async"
+            className="absolute inset-0 size-full animate-[fade-in_700ms_ease-out] object-cover"
+            style={{ filter: "brightness(0.8) saturate(0.95) contrast(0.95)" }}
+          />
           <div className="absolute inset-0 opacity-80">
             <WeatherLayer weather={weather} />
           </div>
           {/* kính: phản chiếu nhẹ + tối dần về viền để hoà vào khung cửa */}
           <div
-            aria-hidden
             className="absolute inset-0"
             style={{
               background:
