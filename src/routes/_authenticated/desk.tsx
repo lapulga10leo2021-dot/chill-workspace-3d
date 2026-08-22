@@ -8,7 +8,7 @@ import { signedUrl, useSession } from "@/lib/session";
 import { asWeather, useProfile, useUpdateProfile } from "@/lib/profile";
 import { getAmbient, type AmbientKind } from "@/lib/ambient";
 import { WEATHER_LABELS, type Weather } from "@/components/room/WeatherLayer";
-import { OutdoorView } from "@/components/room/OutdoorView";
+import { OutdoorView, type GlassPane } from "@/components/room/OutdoorView";
 import { RealtimeClock } from "@/components/room/RealtimeClock";
 import { Stopwatch } from "@/components/room/Stopwatch";
 import { Hotspot, RoomStage } from "@/components/room/RoomStage";
@@ -47,11 +47,31 @@ export const Route = createFileRoute("/_authenticated/desk")({
 
 const WEATHERS: Weather[] = ["rain", "clear", "snow", "autumn", "night"];
 /** Ô kính lớn bên phải (vùng bấm để đổi thời tiết) */
-const WINDOW_AREA = { left: 72.6, top: 0, width: 25.9, height: 44 };
-/** Các ô kính thật của cửa sổ trong ảnh phòng: phải + ô nhỏ phía trên màn hình */
-const WINDOW_PANES = [WINDOW_AREA, { left: 56.6, top: 0, width: 12.4, height: 34 }];
-/** Đồng hồ điện tử trên bàn */
-const CLOCK_AREA = { left: 38.5, top: 39, width: 10.5, height: 8 };
+const WINDOW_AREA = { left: 76.6, top: 0, width: 19.5, height: 40 };
+/** Vùng kính thật theo phối cảnh khung cửa sổ trong ảnh phòng */
+const WINDOW_PANES: GlassPane[] = [
+  // ô kính lớn bên phải
+  {
+    points: [
+      [76.6, 0],
+      [96.1, 0],
+      [96.1, 51.5],
+      [76.6, 36.2],
+    ],
+  },
+  // ô kính nhỏ phía trên màn hình
+  {
+    points: [
+      [56.4, 0],
+      [72.2, 0],
+      [72.2, 20.4],
+      [56.4, 22.8],
+    ],
+  },
+];
+/** Kệ gỗ nhỏ phía trên thùng PC + đồng hồ điện tử đặt trên kệ */
+const SHELF_AREA = { left: 38.2, top: 24.2, width: 12.6, height: 1.6 };
+const CLOCK_AREA = { left: 40.4, top: 16.4, width: 8.4, height: 8 };
 
 function DeskPage() {
   const { user } = useSession();
@@ -136,7 +156,6 @@ function DeskPage() {
       if (error) throw error;
       await updateProfile.mutateAsync({ active_background_id: data.id });
       void qc.invalidateQueries({ queryKey: ["backgrounds", user.id] });
-      toast.success("Đã đổi nền phòng");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Tải nền thất bại");
     } finally {
@@ -155,7 +174,6 @@ function DeskPage() {
       mode: "focus",
     });
     if (error) toast.error(error.message);
-    else toast.success(`Đã lưu ${Math.round(minutes)} phút vào thống kê`);
   }
 
   function toggleAmbient(kind: AmbientKind) {
@@ -335,6 +353,23 @@ function DeskPage() {
             {!bgUrl && (
               <OutdoorView weather={weather} panes={WINDOW_PANES} />
             )}
+            {/* Kệ gỗ nhỏ treo trên thùng PC (chỗ đặt đồng hồ) */}
+            {showClock && (
+              <div
+                aria-hidden
+                className="pointer-events-none absolute rounded-[2px]"
+                style={{
+                  left: `${SHELF_AREA.left}%`,
+                  top: `${SHELF_AREA.top}%`,
+                  width: `${SHELF_AREA.width}%`,
+                  height: `${SHELF_AREA.height}%`,
+                  background:
+                    "linear-gradient(180deg, oklch(0.42 0.06 55) 0%, oklch(0.3 0.05 45) 55%, oklch(0.18 0.03 40) 100%)",
+                  boxShadow:
+                    "0 10px 18px -8px oklch(0 0 0 / 80%), inset 0 1px 0 oklch(0.62 0.08 70 / 45%)",
+                }}
+              />
+            )}
             {/* Đèn bàn */}
             <div
               aria-hidden
@@ -355,11 +390,12 @@ function DeskPage() {
             area={CLOCK_AREA}
             onClick={() => updateProfile.mutate({ show_stopwatch: !showStopwatch })}
           >
-            <span className="pointer-events-none absolute inset-0 flex items-center justify-center [transform:rotate(-3deg)]">
+            <span className="pointer-events-none absolute inset-x-[6%] bottom-[6%] flex items-end justify-center">
               <RealtimeClock compact />
             </span>
           </Hotspot>
         )}
+
 
         <Hotspot
           label="Giá sách — Thư viện tài liệu"
@@ -382,7 +418,6 @@ function DeskPage() {
           onClick={() => {
             const next = WEATHERS[(WEATHERS.indexOf(weather) + 1) % WEATHERS.length]!;
             updateProfile.mutate({ outdoor_weather: next });
-            toast.success(`Ngoài trời: ${WEATHER_LABELS[next]}`);
           }}
         />
         <Hotspot
