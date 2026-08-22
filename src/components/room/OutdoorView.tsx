@@ -74,7 +74,8 @@ export function OutdoorView({ weather, panes }: { weather: Weather; panes: Glass
             className="absolute inset-0 animate-[fade-in_700ms_ease-out]"
             style={{
               background: SKY[weather],
-              filter: "blur(1.5px) saturate(0.9) brightness(0.78)",
+              mixBlendMode: "soft-light",
+              opacity: 0.92,
             }}
           />
           <div
@@ -83,8 +84,9 @@ export function OutdoorView({ weather, panes }: { weather: Weather; panes: Glass
               backgroundImage: `repeating-linear-gradient(90deg, ${SKYLINE[weather]} 0 26px, transparent 26px 34px, ${SKYLINE[weather]} 34px 52px, transparent 52px 66px)`,
               maskImage: "linear-gradient(180deg, transparent 42%, black 62%)",
               WebkitMaskImage: "linear-gradient(180deg, transparent 42%, black 62%)",
-              filter: "blur(2px)",
-              opacity: 0.75,
+              filter: "blur(3px)",
+              mixBlendMode: "multiply",
+              opacity: 0.45,
             }}
           />
           {/* Mưa / tuyết / lá rơi — chỉ trong vùng kính */}
@@ -95,6 +97,8 @@ export function OutdoorView({ weather, panes }: { weather: Weather; panes: Glass
                 backgroundImage: precip.image,
                 backgroundSize: precip.size,
                 opacity: precip.opacity,
+                mixBlendMode: "screen",
+                filter: "blur(0.3px)",
                 animation: `rain-fall ${precip.duration} linear infinite`,
               }}
             />
@@ -104,7 +108,7 @@ export function OutdoorView({ weather, panes }: { weather: Weather; panes: Glass
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(115deg, oklch(0.98 0.01 250 / 10%) 0%, transparent 35%, oklch(0.98 0.01 250 / 6%) 62%, transparent 80%), radial-gradient(120% 120% at 50% 50%, transparent 55%, oklch(0.12 0.02 280 / 55%) 100%)",
+                "linear-gradient(115deg, oklch(0.98 0.01 250 / 7%) 0%, transparent 32%, oklch(0.98 0.01 250 / 4%) 60%, transparent 78%), radial-gradient(120% 120% at 50% 45%, transparent 45%, oklch(0.1 0.02 280 / 60%) 100%)",
             }}
           />
         </div>
