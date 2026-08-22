@@ -8,7 +8,7 @@ import { signedUrl, useSession } from "@/lib/session";
 import { asWeather, useProfile, useUpdateProfile } from "@/lib/profile";
 import { getAmbient, type AmbientKind } from "@/lib/ambient";
 import { WEATHER_LABELS, type Weather } from "@/components/room/WeatherLayer";
-import { OutdoorView } from "@/components/room/OutdoorView";
+import { OutdoorView, type GlassPane } from "@/components/room/OutdoorView";
 import { RealtimeClock } from "@/components/room/RealtimeClock";
 import { Stopwatch } from "@/components/room/Stopwatch";
 import { Hotspot, RoomStage } from "@/components/room/RoomStage";
@@ -156,7 +156,6 @@ function DeskPage() {
       if (error) throw error;
       await updateProfile.mutateAsync({ active_background_id: data.id });
       void qc.invalidateQueries({ queryKey: ["backgrounds", user.id] });
-      toast.success("Đã đổi nền phòng");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Tải nền thất bại");
     } finally {
@@ -175,7 +174,6 @@ function DeskPage() {
       mode: "focus",
     });
     if (error) toast.error(error.message);
-    else toast.success(`Đã lưu ${Math.round(minutes)} phút vào thống kê`);
   }
 
   function toggleAmbient(kind: AmbientKind) {
@@ -402,7 +400,6 @@ function DeskPage() {
           onClick={() => {
             const next = WEATHERS[(WEATHERS.indexOf(weather) + 1) % WEATHERS.length]!;
             updateProfile.mutate({ outdoor_weather: next });
-            toast.success(`Ngoài trời: ${WEATHER_LABELS[next]}`);
           }}
         />
         <Hotspot
