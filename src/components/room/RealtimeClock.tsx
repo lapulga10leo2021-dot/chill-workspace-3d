@@ -18,21 +18,37 @@ export function RealtimeClock({ compact = false }: { compact?: boolean }) {
     : "";
 
   if (compact) {
+    const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+    const todayIdx = now ? (now.getDay() + 6) % 7 : -1;
     return (
       <div
-        className="rounded-[18%] border border-white/10 bg-[oklch(0.18_0.02_270)] px-[6%] py-[4%] shadow-[0_6px_18px_-6px_oklch(0_0_0/60%)]"
+        className="flex items-stretch gap-[4%] rounded-[14%] border border-white/15 bg-[oklch(0.16_0.01_270)] px-[5%] py-[4%] shadow-[0_6px_18px_-6px_oklch(0_0_0/70%),0_2px_0_oklch(0.72_0.16_75/70%)_inset]"
         role="timer"
         aria-label={`Đồng hồ điện tử ${hh}:${mm}`}
       >
-        <div className="flex items-baseline justify-center gap-[2px] font-mono text-[clamp(0.7rem,1.5vw,1.4rem)] leading-none tabular-nums text-[oklch(0.85_0.16_75)] [text-shadow:0_0_8px_oklch(0.8_0.18_70/70%)]">
+        <div className="flex items-center justify-center gap-[2px] font-mono text-[clamp(0.75rem,1.7vw,1.6rem)] font-bold leading-none tabular-nums text-[oklch(0.82_0.2_155)] [text-shadow:0_0_8px_oklch(0.8_0.2_155/70%)]">
           <span>{hh}</span>
           <span className="animate-pulse">:</span>
           <span>{mm}</span>
-          <span className="text-[0.55em] opacity-80">{ss}</span>
+        </div>
+        <div className="flex flex-col justify-between py-[1%] text-[clamp(0.2rem,0.42vw,0.4rem)] leading-none tracking-tight">
+          {days.map((d, i) => (
+            <span
+              key={d}
+              className={
+                i === todayIdx
+                  ? "text-[oklch(0.82_0.2_155)]"
+                  : "text-[oklch(0.98_0_0)] opacity-70"
+              }
+            >
+              {d}
+            </span>
+          ))}
         </div>
       </div>
     );
   }
+
 
   return (
     <div className="text-center">
