@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-/** Đồng hồ điện tử để bàn: vỏ tối, số LED phát sáng. */
+/** Đồng hồ điện tử để bàn: vỏ gỗ tối, số LED hổ phách ấm cho khớp phòng lofi. */
 export function RealtimeClock({ compact = false }: { compact?: boolean }) {
   const [now, setNow] = useState<Date | null>(null);
 
@@ -18,37 +18,30 @@ export function RealtimeClock({ compact = false }: { compact?: boolean }) {
     : "";
 
   if (compact) {
-    const days = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-    const todayIdx = now ? (now.getDay() + 6) % 7 : -1;
     return (
       <div
-        className="flex items-stretch gap-[4%] rounded-[14%] border border-white/15 bg-[oklch(0.16_0.01_270)] px-[5%] py-[4%] shadow-[0_6px_18px_-6px_oklch(0_0_0/70%),0_2px_0_oklch(0.72_0.16_75/70%)_inset]"
         role="timer"
         aria-label={`Đồng hồ điện tử ${hh}:${mm}`}
+        className="flex w-full flex-col items-center justify-center gap-[2%] rounded-[12%] border border-[oklch(0.45_0.05_60/45%)] px-[6%] py-[7%]"
+        style={{
+          background:
+            "linear-gradient(165deg, oklch(0.24 0.03 55) 0%, oklch(0.16 0.02 40) 100%)",
+          boxShadow:
+            "0 10px 22px -10px oklch(0 0 0 / 75%), inset 0 1px 0 oklch(0.7 0.06 70 / 35%)",
+        }}
       >
-        <div className="flex items-center justify-center gap-[2px] font-mono text-[clamp(0.75rem,1.7vw,1.6rem)] font-bold leading-none tabular-nums text-[oklch(0.82_0.2_155)] [text-shadow:0_0_8px_oklch(0.8_0.2_155/70%)]">
+        <div className="flex items-baseline justify-center gap-[2px] font-mono text-[clamp(0.7rem,1.6vw,1.5rem)] font-semibold leading-none tabular-nums text-[oklch(0.83_0.15_70)] [text-shadow:0_0_10px_oklch(0.78_0.16_65/65%)]">
           <span>{hh}</span>
-          <span className="animate-pulse">:</span>
+          <span className="animate-pulse opacity-80">:</span>
           <span>{mm}</span>
+          <span className="ml-[3px] text-[0.55em] opacity-70">{ss}</span>
         </div>
-        <div className="flex flex-col justify-between py-[1%] text-[clamp(0.2rem,0.42vw,0.4rem)] leading-none tracking-tight">
-          {days.map((d, i) => (
-            <span
-              key={d}
-              className={
-                i === todayIdx
-                  ? "text-[oklch(0.82_0.2_155)]"
-                  : "text-[oklch(0.98_0_0)] opacity-70"
-              }
-            >
-              {d}
-            </span>
-          ))}
+        <div className="text-[clamp(0.22rem,0.5vw,0.5rem)] uppercase tracking-[0.25em] text-[oklch(0.72_0.09_70/70%)]">
+          focus
         </div>
       </div>
     );
   }
-
 
   return (
     <div className="text-center">
