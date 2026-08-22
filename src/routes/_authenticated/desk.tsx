@@ -47,11 +47,31 @@ export const Route = createFileRoute("/_authenticated/desk")({
 
 const WEATHERS: Weather[] = ["rain", "clear", "snow", "autumn", "night"];
 /** Ô kính lớn bên phải (vùng bấm để đổi thời tiết) */
-const WINDOW_AREA = { left: 72.6, top: 0, width: 25.9, height: 44 };
-/** Các ô kính thật của cửa sổ trong ảnh phòng: phải + ô nhỏ phía trên màn hình */
-const WINDOW_PANES = [WINDOW_AREA, { left: 56.6, top: 0, width: 12.4, height: 34 }];
-/** Đồng hồ điện tử trên bàn */
-const CLOCK_AREA = { left: 38.5, top: 39, width: 10.5, height: 8 };
+const WINDOW_AREA = { left: 76.6, top: 0, width: 19.5, height: 40 };
+/** Vùng kính thật theo phối cảnh khung cửa sổ trong ảnh phòng */
+const WINDOW_PANES: GlassPane[] = [
+  // ô kính lớn bên phải
+  {
+    points: [
+      [76.6, 0],
+      [96.1, 0],
+      [96.1, 51.5],
+      [76.6, 36.2],
+    ],
+  },
+  // ô kính nhỏ phía trên màn hình
+  {
+    points: [
+      [56.4, 0],
+      [72.2, 0],
+      [72.2, 20.4],
+      [56.4, 22.8],
+    ],
+  },
+];
+/** Kệ gỗ nhỏ phía trên thùng PC + đồng hồ điện tử đặt trên kệ */
+const SHELF_AREA = { left: 38.2, top: 24.2, width: 12.6, height: 1.6 };
+const CLOCK_AREA = { left: 40.4, top: 16.4, width: 8.4, height: 8 };
 
 function DeskPage() {
   const { user } = useSession();
