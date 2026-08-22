@@ -353,6 +353,23 @@ function DeskPage() {
             {!bgUrl && (
               <OutdoorView weather={weather} panes={WINDOW_PANES} />
             )}
+            {/* Kệ gỗ nhỏ treo trên thùng PC (chỗ đặt đồng hồ) */}
+            {showClock && (
+              <div
+                aria-hidden
+                className="pointer-events-none absolute rounded-[2px]"
+                style={{
+                  left: `${SHELF_AREA.left}%`,
+                  top: `${SHELF_AREA.top}%`,
+                  width: `${SHELF_AREA.width}%`,
+                  height: `${SHELF_AREA.height}%`,
+                  background:
+                    "linear-gradient(180deg, oklch(0.42 0.06 55) 0%, oklch(0.3 0.05 45) 55%, oklch(0.18 0.03 40) 100%)",
+                  boxShadow:
+                    "0 10px 18px -8px oklch(0 0 0 / 80%), inset 0 1px 0 oklch(0.62 0.08 70 / 45%)",
+                }}
+              />
+            )}
             {/* Đèn bàn */}
             <div
               aria-hidden
@@ -373,11 +390,12 @@ function DeskPage() {
             area={CLOCK_AREA}
             onClick={() => updateProfile.mutate({ show_stopwatch: !showStopwatch })}
           >
-            <span className="pointer-events-none absolute inset-0 flex items-center justify-center [transform:rotate(-3deg)]">
+            <span className="pointer-events-none absolute inset-x-[6%] bottom-[6%] flex items-end justify-center">
               <RealtimeClock compact />
             </span>
           </Hotspot>
         )}
+
 
         <Hotspot
           label="Giá sách — Thư viện tài liệu"
