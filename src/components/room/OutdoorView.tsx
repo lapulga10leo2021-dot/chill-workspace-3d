@@ -65,6 +65,8 @@ export function OutdoorView({ weather, panes }: { weather: Weather; panes: Glass
           aria-hidden
           className="pointer-events-none absolute inset-0"
           style={{
+            mixBlendMode: "soft-light",
+            opacity: 0.95,
             clipPath: `polygon(${pane.points.map(([x, y]) => `${x}% ${y}%`).join(", ")})`,
           }}
         >
@@ -74,8 +76,7 @@ export function OutdoorView({ weather, panes }: { weather: Weather; panes: Glass
             className="absolute inset-0 animate-[fade-in_700ms_ease-out]"
             style={{
               background: SKY[weather],
-              mixBlendMode: "soft-light",
-              opacity: 0.92,
+              opacity: 1,
             }}
           />
           <div
@@ -85,8 +86,7 @@ export function OutdoorView({ weather, panes }: { weather: Weather; panes: Glass
               maskImage: "linear-gradient(180deg, transparent 42%, black 62%)",
               WebkitMaskImage: "linear-gradient(180deg, transparent 42%, black 62%)",
               filter: "blur(3px)",
-              mixBlendMode: "multiply",
-              opacity: 0.45,
+              opacity: 0.5,
             }}
           />
           {/* Mưa / tuyết / lá rơi — chỉ trong vùng kính */}
@@ -97,7 +97,6 @@ export function OutdoorView({ weather, panes }: { weather: Weather; panes: Glass
                 backgroundImage: precip.image,
                 backgroundSize: precip.size,
                 opacity: precip.opacity,
-                mixBlendMode: "screen",
                 filter: "blur(0.3px)",
                 animation: `rain-fall ${precip.duration} linear infinite`,
               }}
