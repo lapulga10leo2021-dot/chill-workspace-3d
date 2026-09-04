@@ -14,7 +14,7 @@ type Scene = {
 
 const SCENES: Record<Weather, Scene> = {
   clear: {
-    filter: "blur(3px) brightness(2.6) contrast(0.85) saturate(0.7) hue-rotate(-14deg)",
+    filter: "blur(3px) brightness(2.6) contrast(0.85) saturate(0.18)",
     tint: "linear-gradient(180deg, oklch(0.78 0.09 235) 0%, oklch(0.86 0.07 205) 55%, oklch(0.9 0.09 92) 100%)",
     tintOpacity: 0.6,
   },
@@ -29,9 +29,9 @@ const SCENES: Record<Weather, Scene> = {
     tintOpacity: 0.55,
   },
   autumn: {
-    filter: "blur(3px) brightness(1.7) contrast(0.85) saturate(1.1) hue-rotate(30deg)",
+    filter: "blur(3px) brightness(1.7) contrast(0.85) saturate(0.15)",
     tint: "linear-gradient(180deg, oklch(0.6 0.1 40) 0%, oklch(0.75 0.12 70) 100%)",
-    tintOpacity: 0.45,
+    tintOpacity: 0.5,
   },
   night: {
     filter: "blur(1.5px) brightness(0.72) saturate(0.9)",
