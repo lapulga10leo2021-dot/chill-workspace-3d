@@ -93,7 +93,6 @@ export function OutdoorView({ weather, panes }: { weather: Weather; panes: Glass
                 {
                   clipPath,
                   backdropFilter: scene.filter,
-                  WebkitBackdropFilter: scene.filter,
                 } as React.CSSProperties
               }
             >
