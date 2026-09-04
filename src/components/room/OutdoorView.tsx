@@ -89,14 +89,20 @@ export function OutdoorView({ weather, panes }: { weather: Weather; panes: Glass
             <div
               key={`s-${weather}`}
               className="pointer-events-none absolute inset-0 animate-[fade-in_700ms_ease-out]"
-              style={{
-                clipPath,
-                backdropFilter: scene.filter,
-                WebkitBackdropFilter: scene.filter,
-                background: scene.tint,
-                opacity: scene.tintOpacity + 0.6,
-              } as React.CSSProperties}
-            />
+              style={
+                {
+                  clipPath,
+                  backdropFilter: scene.filter,
+                  WebkitBackdropFilter: scene.filter,
+                } as React.CSSProperties
+              }
+            >
+              <div
+                className="absolute inset-0"
+                style={{ background: scene.tint, opacity: scene.tintOpacity }}
+              />
+            </div>
+
             {/* Mưa / tuyết / lá rơi — chỉ ngoài cửa sổ */}
             {precip && (
               <div
