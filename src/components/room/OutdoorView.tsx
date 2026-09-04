@@ -1,50 +1,42 @@
+import type React from "react";
 import type { Weather } from "./WeatherLayer";
 
 /** Ô kính được mô tả bằng đa giác (theo % khung 16/9) để khớp phối cảnh cửa sổ. */
 export type GlassPane = { points: [number, number][] };
 
 type Scene = {
-  /** ánh sáng ngoài trời: làm sáng cảnh thật phía sau kính */
-  light: string;
-  lightOpacity: number;
-  /** sắc trời: nhuộm màu cảnh cho đúng thời tiết */
+  /** lọc chính khung cảnh thật phía sau kính (sáng/độ bão hoà/màu) */
+  filter: string;
+  /** sắc trời phủ nhẹ lên cảnh */
   tint: string;
   tintOpacity: number;
 };
 
 const SCENES: Record<Weather, Scene> = {
   clear: {
-    light:
-      "linear-gradient(180deg, oklch(0.72 0.09 235) 0%, oklch(0.8 0.07 210) 55%, oklch(0.86 0.1 90) 100%)",
-    lightOpacity: 0.62,
-    tint: "linear-gradient(180deg, oklch(0.7 0.12 230) 0%, oklch(0.82 0.12 95) 100%)",
-    tintOpacity: 0.6,
+    filter: "blur(2.5px) brightness(1.9) saturate(0.85) hue-rotate(-12deg)",
+    tint: "linear-gradient(180deg, oklch(0.78 0.09 235) 0%, oklch(0.86 0.07 205) 55%, oklch(0.9 0.09 92) 100%)",
+    tintOpacity: 0.4,
   },
   rain: {
-    light: "linear-gradient(180deg, oklch(0.5 0.04 255) 0%, oklch(0.58 0.03 245) 100%)",
-    lightOpacity: 0.16,
-    tint: "linear-gradient(180deg, oklch(0.45 0.06 255) 0%, oklch(0.5 0.05 245) 100%)",
-    tintOpacity: 0.45,
+    filter: "blur(1.2px) brightness(1.05) saturate(0.95)",
+    tint: "linear-gradient(180deg, oklch(0.45 0.05 255) 0%, oklch(0.5 0.04 245) 100%)",
+    tintOpacity: 0.14,
   },
   snow: {
-    light:
-      "linear-gradient(180deg, oklch(0.66 0.02 250) 0%, oklch(0.78 0.015 250) 60%, oklch(0.88 0.01 250) 100%)",
-    lightOpacity: 0.5,
-    tint: "linear-gradient(180deg, oklch(0.7 0.03 245) 0%, oklch(0.85 0.02 250) 100%)",
-    tintOpacity: 0.55,
+    filter: "blur(3px) brightness(1.6) saturate(0.35)",
+    tint: "linear-gradient(180deg, oklch(0.8 0.02 250) 0%, oklch(0.9 0.015 250) 100%)",
+    tintOpacity: 0.34,
   },
   autumn: {
-    light:
-      "linear-gradient(180deg, oklch(0.6 0.07 40) 0%, oklch(0.7 0.1 55) 55%, oklch(0.78 0.12 72) 100%)",
-    lightOpacity: 0.45,
-    tint: "linear-gradient(180deg, oklch(0.55 0.13 40) 0%, oklch(0.72 0.14 70) 100%)",
-    tintOpacity: 0.6,
+    filter: "blur(2.5px) brightness(1.35) saturate(1.15) hue-rotate(28deg)",
+    tint: "linear-gradient(180deg, oklch(0.6 0.1 40) 0%, oklch(0.75 0.12 70) 100%)",
+    tintOpacity: 0.32,
   },
   night: {
-    light: "linear-gradient(180deg, oklch(0.3 0.05 285) 0%, oklch(0.38 0.06 300) 100%)",
-    lightOpacity: 0.08,
-    tint: "linear-gradient(180deg, oklch(0.24 0.06 285) 0%, oklch(0.32 0.07 300) 100%)",
-    tintOpacity: 0.4,
+    filter: "blur(1.5px) brightness(0.72) saturate(0.9)",
+    tint: "linear-gradient(180deg, oklch(0.24 0.06 285) 0%, oklch(0.3 0.07 300) 100%)",
+    tintOpacity: 0.24,
   },
 };
 
@@ -93,26 +85,17 @@ export function OutdoorView({ weather, panes }: { weather: Weather; panes: Glass
         const clipPath = clip(pane);
         return (
           <div key={i} aria-hidden className="contents">
-            {/* Ánh sáng ngoài trời (làm sáng cảnh thật) */}
+            {/* Khung cảnh ngoài trời: lọc & nhuộm chính cảnh thật sau kính */}
             <div
-              key={`l-${weather}`}
+              key={`s-${weather}`}
               className="pointer-events-none absolute inset-0 animate-[fade-in_700ms_ease-out]"
               style={{
                 clipPath,
-                background: scene.light,
-                opacity: scene.lightOpacity,
-                mixBlendMode: "screen",
-              }}
-            />
-            {/* Sắc trời */}
-            <div
-              className="pointer-events-none absolute inset-0"
-              style={{
-                clipPath,
+                backdropFilter: scene.filter,
+                WebkitBackdropFilter: scene.filter,
                 background: scene.tint,
-                opacity: scene.tintOpacity,
-                mixBlendMode: "color",
-              }}
+                opacity: scene.tintOpacity + 0.6,
+              } as React.CSSProperties}
             />
             {/* Mưa / tuyết / lá rơi — chỉ ngoài cửa sổ */}
             {precip && (
