@@ -22,23 +22,27 @@ export function RealtimeClock({ compact = false }: { compact?: boolean }) {
       <div
         role="timer"
         aria-label={`Đồng hồ điện tử ${hh}:${mm}`}
-        className="flex w-full flex-col items-center justify-center gap-[2%] rounded-[12%] border border-[oklch(0.45_0.05_60/45%)] px-[6%] py-[7%]"
+        className="relative flex w-full flex-col items-center justify-center overflow-hidden rounded-[9%] border border-[oklch(0.48_0.07_55/55%)] px-[8%] pb-[8%] pt-[7%]"
         style={{
           background:
-            "linear-gradient(165deg, oklch(0.24 0.03 55) 0%, oklch(0.16 0.02 40) 100%)",
+            "repeating-linear-gradient(92deg, transparent 0 11%, oklch(0.18 0.035 45 / 20%) 12% 13%, transparent 14% 25%), linear-gradient(165deg, oklch(0.36 0.07 57) 0%, oklch(0.24 0.055 48) 48%, oklch(0.16 0.032 40) 100%)",
           boxShadow:
-            "0 10px 22px -10px oklch(0 0 0 / 75%), inset 0 1px 0 oklch(0.7 0.06 70 / 35%)",
+            "0 12px 18px -8px oklch(0 0 0 / 85%), inset 0 1px 0 oklch(0.72 0.08 72 / 42%), inset 0 -2px 4px oklch(0.08 0.02 40 / 55%)",
         }}
       >
-        <div className="flex items-baseline justify-center gap-[2px] font-mono text-[clamp(0.7rem,1.6vw,1.5rem)] font-semibold leading-none tabular-nums text-[oklch(0.83_0.15_70)] [text-shadow:0_0_10px_oklch(0.78_0.16_65/65%)]">
+        <div className="absolute inset-x-[8%] top-[9%] bottom-[15%] rounded-[7%] border border-[oklch(0.08_0.01_45/75%)] bg-[oklch(0.105_0.014_45/92%)] shadow-[inset_0_2px_5px_oklch(0_0_0/80%)]" />
+        <div className="relative flex items-baseline justify-center gap-[2px] font-mono text-[clamp(0.66rem,1.45vw,1.35rem)] font-semibold leading-none tabular-nums text-[oklch(0.84_0.15_72)] [text-shadow:0_0_8px_oklch(0.8_0.16_68/72%)]">
           <span>{hh}</span>
           <span className="animate-pulse opacity-80">:</span>
           <span>{mm}</span>
-          <span className="ml-[3px] text-[0.55em] opacity-70">{ss}</span>
+          <span className="ml-[2px] text-[0.5em] opacity-65">{ss}</span>
         </div>
-        <div className="text-[clamp(0.22rem,0.5vw,0.5rem)] uppercase tracking-[0.25em] text-[oklch(0.72_0.09_70/70%)]">
-          focus
+        <div className="relative mt-[6%] flex w-[68%] items-center justify-between text-[clamp(0.18rem,0.36vw,0.36rem)] uppercase tracking-[0.12em] text-[oklch(0.7_0.075_72/68%)]">
+          <span>desk</span>
+          <span className="size-[3px] rounded-full bg-[oklch(0.76_0.14_72)] shadow-[0_0_5px_oklch(0.78_0.15_70/80%)]" />
         </div>
+        <span className="absolute bottom-[-3%] left-[14%] h-[8%] w-[12%] rounded-b-sm bg-[oklch(0.12_0.025_42)]" />
+        <span className="absolute bottom-[-3%] right-[14%] h-[8%] w-[12%] rounded-b-sm bg-[oklch(0.12_0.025_42)]" />
       </div>
     );
   }
