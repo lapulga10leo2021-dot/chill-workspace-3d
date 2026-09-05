@@ -18,22 +18,22 @@ type Scene = {
 const SCENES: Record<Weather, Scene> = {
   clear: {
     image: viewClear,
-    filter: "brightness(0.72) contrast(0.96) saturate(0.72)",
+    filter: "brightness(0.58) contrast(0.94) saturate(0.62)",
     position: "58% 52%",
   },
   rain: {
     image: viewRain,
-    filter: "brightness(0.5) contrast(1.05) saturate(0.7)",
+    filter: "blur(1.8px) brightness(0.36) contrast(1.02) saturate(0.58)",
     position: "54% 48%",
   },
   snow: {
     image: viewSnow,
-    filter: "brightness(0.68) contrast(0.92) saturate(0.65)",
+    filter: "brightness(0.56) contrast(0.9) saturate(0.52)",
     position: "56% 48%",
   },
   autumn: {
     image: viewAutumn,
-    filter: "brightness(0.6) contrast(0.98) saturate(0.78)",
+    filter: "brightness(0.48) contrast(0.96) saturate(0.68)",
     position: "56% 50%",
   },
   night: {
@@ -48,24 +48,24 @@ const PRECIP: Partial<
 > = {
   rain: {
     image:
-      "repeating-linear-gradient(101deg, transparent 0 17px, oklch(0.9 0.025 245 / 30%) 18px 19px), repeating-linear-gradient(98deg, transparent 0 31px, oklch(0.9 0.025 245 / 18%) 32px 33px)",
+      "repeating-linear-gradient(101deg, transparent 0 39px, oklch(0.9 0.025 245 / 22%) 40px 41px), repeating-linear-gradient(98deg, transparent 0 67px, oklch(0.9 0.025 245 / 12%) 68px 69px)",
     size: "100% 100%",
     duration: "1.15s",
-    opacity: 0.38,
+    opacity: 0.16,
   },
   snow: {
     image:
       "radial-gradient(circle at 20% 20%, oklch(0.99 0.01 260 / 92%) 0 2px, transparent 3px), radial-gradient(circle at 70% 55%, oklch(0.99 0.01 260 / 70%) 0 2.5px, transparent 3px)",
     size: "110px 150px, 180px 210px",
     duration: "7s",
-    opacity: 0.55,
+    opacity: 0.42,
   },
   autumn: {
     image:
       "radial-gradient(circle at 25% 25%, oklch(0.72 0.14 60 / 92%) 0 3px, transparent 4px), radial-gradient(circle at 68% 60%, oklch(0.62 0.16 40 / 82%) 0 3.5px, transparent 4px)",
     size: "140px 190px, 230px 250px",
     duration: "9s",
-    opacity: 0.58,
+    opacity: 0.46,
   },
 };
 
