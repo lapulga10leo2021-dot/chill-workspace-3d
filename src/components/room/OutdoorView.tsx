@@ -1,42 +1,45 @@
 import type React from "react";
 import type { Weather } from "./WeatherLayer";
+import viewAutumn from "@/assets/view-autumn.jpg";
+import viewClear from "@/assets/view-clear.jpg";
+import viewNight from "@/assets/view-night.jpg";
+import viewRain from "@/assets/view-rain.jpg";
+import viewSnow from "@/assets/view-snow.jpg";
 
 /** Ô kính được mô tả bằng đa giác (theo % khung 16/9) để khớp phối cảnh cửa sổ. */
 export type GlassPane = { points: [number, number][] };
 
 type Scene = {
-  /** lọc chính khung cảnh thật phía sau kính (sáng/độ bão hoà/màu) */
+  image: string;
   filter: string;
-  /** sắc trời phủ nhẹ lên cảnh */
-  tint: string;
-  tintOpacity: number;
+  position: string;
 };
 
 const SCENES: Record<Weather, Scene> = {
   clear: {
-    filter: "blur(3px) brightness(2.6) contrast(0.85) saturate(0.18)",
-    tint: "linear-gradient(180deg, oklch(0.78 0.09 235) 0%, oklch(0.86 0.07 205) 55%, oklch(0.9 0.09 92) 100%)",
-    tintOpacity: 0.6,
+    image: viewClear,
+    filter: "brightness(0.72) contrast(0.96) saturate(0.72)",
+    position: "58% 52%",
   },
   rain: {
-    filter: "blur(1.2px) brightness(1.05) saturate(0.95)",
-    tint: "linear-gradient(180deg, oklch(0.45 0.05 255) 0%, oklch(0.5 0.04 245) 100%)",
-    tintOpacity: 0.14,
+    image: viewRain,
+    filter: "brightness(0.5) contrast(1.05) saturate(0.7)",
+    position: "54% 48%",
   },
   snow: {
-    filter: "blur(3.5px) brightness(2.2) contrast(0.8) saturate(0.25)",
-    tint: "linear-gradient(180deg, oklch(0.8 0.02 250) 0%, oklch(0.9 0.015 250) 100%)",
-    tintOpacity: 0.55,
+    image: viewSnow,
+    filter: "brightness(0.68) contrast(0.92) saturate(0.65)",
+    position: "56% 48%",
   },
   autumn: {
-    filter: "blur(3px) brightness(1.7) contrast(0.85) saturate(0.15)",
-    tint: "linear-gradient(180deg, oklch(0.6 0.1 40) 0%, oklch(0.75 0.12 70) 100%)",
-    tintOpacity: 0.5,
+    image: viewAutumn,
+    filter: "brightness(0.6) contrast(0.98) saturate(0.78)",
+    position: "56% 50%",
   },
   night: {
-    filter: "blur(1.5px) brightness(0.72) saturate(0.9)",
-    tint: "linear-gradient(180deg, oklch(0.24 0.06 285) 0%, oklch(0.3 0.07 300) 100%)",
-    tintOpacity: 0.24,
+    image: viewNight,
+    filter: "brightness(0.52) contrast(1.08) saturate(0.68)",
+    position: "55% 52%",
   },
 };
 
@@ -45,24 +48,24 @@ const PRECIP: Partial<
 > = {
   rain: {
     image:
-      "repeating-linear-gradient(100deg, transparent 0 6px, oklch(0.95 0.02 250 / 45%) 6px 7px), repeating-linear-gradient(97deg, transparent 0 11px, oklch(0.95 0.02 250 / 24%) 11px 12px)",
-    size: "auto",
-    duration: "0.8s",
-    opacity: 0.45,
+      "repeating-linear-gradient(101deg, transparent 0 17px, oklch(0.9 0.025 245 / 30%) 18px 19px), repeating-linear-gradient(98deg, transparent 0 31px, oklch(0.9 0.025 245 / 18%) 32px 33px)",
+    size: "100% 100%",
+    duration: "1.15s",
+    opacity: 0.38,
   },
   snow: {
     image:
       "radial-gradient(circle at 20% 20%, oklch(0.99 0.01 260 / 92%) 0 2px, transparent 3px), radial-gradient(circle at 70% 55%, oklch(0.99 0.01 260 / 70%) 0 2.5px, transparent 3px)",
     size: "110px 150px, 180px 210px",
     duration: "7s",
-    opacity: 0.8,
+    opacity: 0.55,
   },
   autumn: {
     image:
       "radial-gradient(circle at 25% 25%, oklch(0.72 0.14 60 / 92%) 0 3px, transparent 4px), radial-gradient(circle at 68% 60%, oklch(0.62 0.16 40 / 82%) 0 3.5px, transparent 4px)",
     size: "140px 190px, 230px 250px",
     duration: "9s",
-    opacity: 0.85,
+    opacity: 0.58,
   },
 };
 
@@ -71,9 +74,8 @@ function clip(pane: GlassPane) {
 }
 
 /**
- * Đổi khung cảnh *phía sau* ô kính: các lớp ánh sáng / sắc trời hoà vào chính
- * khung cảnh thành phố có sẵn trong tranh (không chèn ảnh), và mưa/tuyết/lá rơi
- * chỉ diễn ra trong vùng kính nên luôn ở ngoài phòng.
+ * Khung cảnh nằm sau đúng hai ô kính theo phối cảnh. Khung cửa nguyên bản của
+ * căn phòng luôn nằm trên, còn thời tiết chỉ xuất hiện trong vùng ngoài trời.
  */
 export function OutdoorView({ weather, panes }: { weather: Weather; panes: GlassPane[] }) {
   const scene = SCENES[weather];
@@ -85,22 +87,20 @@ export function OutdoorView({ weather, panes }: { weather: Weather; panes: Glass
         const clipPath = clip(pane);
         return (
           <div key={i} aria-hidden className="contents">
-            {/* Khung cảnh ngoài trời: lọc & nhuộm chính cảnh thật sau kính */}
+            {/* Cùng một ảnh phủ toàn sân khấu để đường chân trời nối liền qua hai ô kính. */}
             <div
               key={`s-${weather}`}
               className="pointer-events-none absolute inset-0 animate-[fade-in_700ms_ease-out]"
-              style={
-                {
-                  clipPath,
-                  backdropFilter: scene.filter,
-                } as React.CSSProperties
-              }
-            >
-              <div
-                className="absolute inset-0"
-                style={{ background: scene.tint, opacity: scene.tintOpacity }}
-              />
-            </div>
+              style={{
+                clipPath,
+                backgroundImage: `linear-gradient(oklch(0.12 0.025 280 / 12%), oklch(0.12 0.025 280 / 24%)), url(${scene.image})`,
+                backgroundPosition: `center, ${scene.position}`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover, cover",
+                filter: scene.filter,
+                transform: "scale(1.015)",
+              } as React.CSSProperties}
+            />
 
             {/* Mưa / tuyết / lá rơi — chỉ ngoài cửa sổ */}
             {precip && (
@@ -121,7 +121,7 @@ export function OutdoorView({ weather, panes }: { weather: Weather; panes: Glass
               style={{
                 clipPath,
                 background:
-                  "linear-gradient(115deg, oklch(0.98 0.01 250 / 8%) 0%, transparent 30%, oklch(0.98 0.01 250 / 4%) 58%, transparent 76%), radial-gradient(130% 130% at 50% 40%, transparent 48%, oklch(0.1 0.02 280 / 45%) 100%)",
+                   "linear-gradient(115deg, oklch(0.98 0.01 250 / 7%) 0%, transparent 27%, oklch(0.98 0.01 250 / 3%) 55%, transparent 74%), linear-gradient(180deg, oklch(0.08 0.018 280 / 8%), oklch(0.08 0.018 280 / 22%))",
               }}
             />
           </div>
