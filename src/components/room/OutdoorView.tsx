@@ -3,7 +3,7 @@ import type { Weather } from "./WeatherLayer";
 import viewAutumn from "@/assets/view-autumn.jpg";
 import viewClear from "@/assets/view-clear.jpg";
 import viewNight from "@/assets/view-night.jpg";
-import viewRain from "@/assets/view-rain-integrated.jpg";
+import viewRainAsset from "@/assets/view-rain-integrated.jpg.asset.json";
 import viewSnow from "@/assets/view-snow.jpg";
 
 /** Ô kính được mô tả bằng đa giác (theo % khung 16/9) để khớp phối cảnh cửa sổ. */
@@ -22,7 +22,7 @@ const SCENES: Record<Weather, Scene> = {
     position: "58% 52%",
   },
   rain: {
-    image: viewRain,
+    image: viewRainAsset.url,
     filter: "brightness(0.72) contrast(0.92) saturate(0.72)",
     position: "53% 47%",
   },
