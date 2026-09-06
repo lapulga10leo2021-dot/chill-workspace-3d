@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-/** Đồng hồ điện tử để bàn: vỏ gỗ tối, số LED hổ phách ấm cho khớp phòng lofi. */
+/** Đồng hồ điện tử để bàn: khối gỗ óc chó, mặt kính chìm và LED hổ phách. */
 export function RealtimeClock({ compact = false }: { compact?: boolean }) {
   const [now, setNow] = useState<Date | null>(null);
 
@@ -19,30 +19,31 @@ export function RealtimeClock({ compact = false }: { compact?: boolean }) {
 
   if (compact) {
     return (
-      <div
-        role="timer"
-        aria-label={`Đồng hồ điện tử ${hh}:${mm}`}
-        className="relative flex w-full flex-col items-center justify-center overflow-hidden rounded-[9%] border border-[oklch(0.48_0.07_55/55%)] px-[8%] pb-[8%] pt-[7%]"
-        style={{
-          background:
-            "repeating-linear-gradient(92deg, transparent 0 11%, oklch(0.18 0.035 45 / 20%) 12% 13%, transparent 14% 25%), linear-gradient(165deg, oklch(0.36 0.07 57) 0%, oklch(0.24 0.055 48) 48%, oklch(0.16 0.032 40) 100%)",
-          boxShadow:
-            "0 12px 18px -8px oklch(0 0 0 / 85%), inset 0 1px 0 oklch(0.72 0.08 72 / 42%), inset 0 -2px 4px oklch(0.08 0.02 40 / 55%)",
-        }}
-      >
-        <div className="absolute inset-x-[8%] top-[9%] bottom-[15%] rounded-[7%] border border-[oklch(0.08_0.01_45/75%)] bg-[oklch(0.105_0.014_45/92%)] shadow-[inset_0_2px_5px_oklch(0_0_0/80%)]" />
-        <div className="relative flex items-baseline justify-center gap-[2px] font-mono text-[clamp(0.66rem,1.45vw,1.35rem)] font-semibold leading-none tabular-nums text-[oklch(0.84_0.15_72)] [text-shadow:0_0_8px_oklch(0.8_0.16_68/72%)]">
-          <span>{hh}</span>
-          <span className="animate-pulse opacity-80">:</span>
-          <span>{mm}</span>
-          <span className="ml-[2px] text-[0.5em] opacity-65">{ss}</span>
+      <div className="relative w-full pb-[8%] [perspective:260px]">
+        <div className="absolute bottom-0 left-[8%] right-[4%] h-[16%] rounded-[50%] bg-[oklch(0.03_0.006_40/78%)] blur-[4px]" />
+        <div
+          role="timer"
+          aria-label={`Đồng hồ điện tử ${hh}:${mm}`}
+          className="relative aspect-[2.25/1] w-full overflow-hidden rounded-[8%_7%_9%_8%] border border-[oklch(0.47_0.075_58/58%)] [transform:rotateY(-3deg)_rotateX(1deg)]"
+          style={{
+            background:
+              "repeating-linear-gradient(96deg, transparent 0 8%, oklch(0.16 0.03 44 / 23%) 8.5% 9.5%, transparent 10% 20%), linear-gradient(170deg, oklch(0.4 0.075 58) 0%, oklch(0.27 0.06 49) 48%, oklch(0.155 0.033 39) 100%)",
+            boxShadow:
+              "8px 9px 12px -7px oklch(0 0 0 / 92%), inset 0 1px 0 oklch(0.73 0.08 72 / 46%), inset -5px -6px 8px oklch(0.08 0.018 38 / 45%)",
+          }}
+        >
+          <div className="absolute inset-x-[7%] bottom-[16%] top-[14%] rounded-[6%] border border-[oklch(0.08_0.01_45/86%)] bg-[oklch(0.085_0.01_42/96%)] shadow-[inset_0_3px_7px_oklch(0_0_0/90%),0_1px_0_oklch(0.67_0.07_68/30%)]" />
+          <div className="absolute inset-x-[9%] top-[18%] h-[14%] rounded-full bg-[linear-gradient(180deg,oklch(0.9_0.02_75/7%),transparent)]" />
+          <div className="relative flex h-full items-center justify-center pb-[4%] font-mono text-[clamp(0.62rem,1.28vw,1.2rem)] font-semibold leading-none tabular-nums text-[oklch(0.82_0.15_70)] [text-shadow:0_0_5px_oklch(0.78_0.16_65/65%)]">
+            <span>{hh}</span>
+            <span className="mx-[2px] animate-pulse opacity-75">:</span>
+            <span>{mm}</span>
+            <span className="ml-[5%] text-[0.42em] opacity-55">{ss}</span>
+          </div>
+          <span className="absolute bottom-[7%] right-[9%] size-[2.5%] rounded-full bg-[oklch(0.78_0.145_69)] shadow-[0_0_4px_oklch(0.78_0.15_68/75%)]" />
         </div>
-        <div className="relative mt-[6%] flex w-[68%] items-center justify-between text-[clamp(0.18rem,0.36vw,0.36rem)] uppercase tracking-[0.12em] text-[oklch(0.7_0.075_72/68%)]">
-          <span>desk</span>
-          <span className="size-[3px] rounded-full bg-[oklch(0.76_0.14_72)] shadow-[0_0_5px_oklch(0.78_0.15_70/80%)]" />
-        </div>
-        <span className="absolute bottom-[-3%] left-[14%] h-[8%] w-[12%] rounded-b-sm bg-[oklch(0.12_0.025_42)]" />
-        <span className="absolute bottom-[-3%] right-[14%] h-[8%] w-[12%] rounded-b-sm bg-[oklch(0.12_0.025_42)]" />
+        <span className="absolute bottom-[4%] left-[15%] h-[8%] w-[13%] rounded-b-sm bg-[oklch(0.105_0.022_38)]" />
+        <span className="absolute bottom-[4%] right-[12%] h-[8%] w-[13%] rounded-b-sm bg-[oklch(0.105_0.022_38)]" />
       </div>
     );
   }
