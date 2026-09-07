@@ -43,9 +43,8 @@ export const Route = createFileRoute("/_authenticated/desk")({
   component: DeskPage,
 });
 
-/** Kệ gỗ nhỏ phía trên thùng PC + đồng hồ điện tử đặt trên kệ */
-const SHELF_AREA = { left: 38.2, top: 24.2, width: 12.6, height: 1.6 };
-const CLOCK_AREA = { left: 40.4, top: 16.4, width: 8.4, height: 8 };
+/** Đồng hồ gỗ nhỏ đặt trực tiếp trên góc trái mặt bàn. */
+const CLOCK_AREA = { left: 36.2, top: 40.2, width: 9.2, height: 7.4 };
 
 function DeskPage() {
   const { user } = useSession();
@@ -304,23 +303,6 @@ function DeskPage() {
                 className="absolute inset-0 size-full object-cover"
               />
             )}
-            {/* Kệ gỗ nhỏ treo trên thùng PC (chỗ đặt đồng hồ) */}
-            {showClock && (
-              <div
-                aria-hidden
-                className="pointer-events-none absolute rounded-[2px]"
-                style={{
-                  left: `${SHELF_AREA.left}%`,
-                  top: `${SHELF_AREA.top}%`,
-                  width: `${SHELF_AREA.width}%`,
-                  height: `${SHELF_AREA.height}%`,
-                  background:
-                    "linear-gradient(180deg, oklch(0.42 0.06 55) 0%, oklch(0.3 0.05 45) 55%, oklch(0.18 0.03 40) 100%)",
-                  boxShadow:
-                    "0 10px 18px -8px oklch(0 0 0 / 80%), inset 0 1px 0 oklch(0.62 0.08 70 / 45%)",
-                }}
-              />
-            )}
             {/* Đèn bàn */}
             <div
               aria-hidden
@@ -341,7 +323,7 @@ function DeskPage() {
             area={CLOCK_AREA}
             onClick={() => updateProfile.mutate({ show_stopwatch: !showStopwatch })}
           >
-            <span className="pointer-events-none absolute inset-x-[6%] bottom-[6%] flex items-end justify-center">
+            <span className="pointer-events-none absolute inset-x-[4%] bottom-0 flex items-end justify-center">
               <RealtimeClock compact />
             </span>
           </Hotspot>
