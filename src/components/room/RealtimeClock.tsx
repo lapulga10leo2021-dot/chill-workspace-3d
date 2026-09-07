@@ -19,31 +19,27 @@ export function RealtimeClock({ compact = false }: { compact?: boolean }) {
 
   if (compact) {
     return (
-      <div className="relative w-full pb-[8%] [perspective:260px]">
-        <div className="absolute bottom-0 left-[8%] right-[4%] h-[16%] rounded-[50%] bg-[oklch(0.03_0.006_40/78%)] blur-[4px]" />
+      <div className="relative w-full pb-[5%] [perspective:260px]">
+        <div className="absolute bottom-0 left-[7%] right-[2%] h-[18%] rounded-[50%] bg-[oklch(0.03_0.006_40/72%)] blur-[3px]" />
         <div
           role="timer"
           aria-label={`Đồng hồ điện tử ${hh}:${mm}`}
-          className="relative aspect-[2.25/1] w-full overflow-hidden rounded-[8%_7%_9%_8%] border border-[oklch(0.47_0.075_58/58%)] [transform:rotateY(-3deg)_rotateX(1deg)]"
+          className="relative aspect-[2.28/1] w-full overflow-hidden rounded-[12%] border border-[oklch(0.45_0.07_55/52%)] [transform:rotateY(-4deg)_rotateX(1deg)]"
           style={{
             background:
-              "repeating-linear-gradient(96deg, transparent 0 8%, oklch(0.16 0.03 44 / 23%) 8.5% 9.5%, transparent 10% 20%), linear-gradient(170deg, oklch(0.4 0.075 58) 0%, oklch(0.27 0.06 49) 48%, oklch(0.155 0.033 39) 100%)",
+              "repeating-linear-gradient(4deg, transparent 0 11%, oklch(0.12 0.025 42 / 24%) 11.5% 12.4%, transparent 13% 24%), linear-gradient(165deg, oklch(0.43 0.075 58) 0%, oklch(0.3 0.062 49) 52%, oklch(0.19 0.04 42) 100%)",
             boxShadow:
-              "8px 9px 12px -7px oklch(0 0 0 / 92%), inset 0 1px 0 oklch(0.73 0.08 72 / 46%), inset -5px -6px 8px oklch(0.08 0.018 38 / 45%)",
+              "7px 8px 10px -6px oklch(0 0 0 / 88%), inset 0 1px 0 oklch(0.74 0.08 72 / 42%), inset -5px -5px 8px oklch(0.08 0.018 38 / 34%)",
           }}
         >
-          <div className="absolute inset-x-[7%] bottom-[16%] top-[14%] rounded-[6%] border border-[oklch(0.08_0.01_45/86%)] bg-[oklch(0.085_0.01_42/96%)] shadow-[inset_0_3px_7px_oklch(0_0_0/90%),0_1px_0_oklch(0.67_0.07_68/30%)]" />
-          <div className="absolute inset-x-[9%] top-[18%] h-[14%] rounded-full bg-[linear-gradient(180deg,oklch(0.9_0.02_75/7%),transparent)]" />
-          <div className="relative flex h-full items-center justify-center pb-[4%] font-mono text-[clamp(0.62rem,1.28vw,1.2rem)] font-semibold leading-none tabular-nums text-[oklch(0.82_0.15_70)] [text-shadow:0_0_5px_oklch(0.78_0.16_65/65%)]">
+          <div className="absolute inset-0 bg-[linear-gradient(112deg,transparent_0_47%,oklch(0.82_0.08_72/7%)_54%,transparent_62%)]" />
+          <div className="relative flex h-full items-center justify-center pb-[2%] font-mono text-[clamp(0.58rem,1.1vw,1.05rem)] font-medium leading-none tabular-nums text-[oklch(0.86_0.15_79)] [text-shadow:0_0_4px_oklch(0.83_0.16_72/72%)]">
             <span>{hh}</span>
             <span className="mx-[2px] animate-pulse opacity-75">:</span>
             <span>{mm}</span>
-            <span className="ml-[5%] text-[0.42em] opacity-55">{ss}</span>
+            <span className="ml-[9%] text-[0.55em] opacity-80">{ss}</span>
           </div>
-          <span className="absolute bottom-[7%] right-[9%] size-[2.5%] rounded-full bg-[oklch(0.78_0.145_69)] shadow-[0_0_4px_oklch(0.78_0.15_68/75%)]" />
         </div>
-        <span className="absolute bottom-[4%] left-[15%] h-[8%] w-[13%] rounded-b-sm bg-[oklch(0.105_0.022_38)]" />
-        <span className="absolute bottom-[4%] right-[12%] h-[8%] w-[13%] rounded-b-sm bg-[oklch(0.105_0.022_38)]" />
       </div>
     );
   }
