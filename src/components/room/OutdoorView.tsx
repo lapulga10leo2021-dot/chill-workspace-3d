@@ -69,10 +69,8 @@ const PRECIP: Partial<
   },
 };
 
-function clip(panes: GlassPane[]) {
-  return panes
-    .map((pane) => `polygon(${pane.points.map(([x, y]) => `${x}% ${y}%`).join(", ")})`)
-    .join(", ");
+function clip(pane: GlassPane) {
+  return `polygon(${pane.points.map(([x, y]) => `${x}% ${y}%`).join(", ")})`;
 }
 
 /**
@@ -82,57 +80,58 @@ function clip(panes: GlassPane[]) {
 export function OutdoorView({ weather, panes }: { weather: Weather; panes: GlassPane[] }) {
   const scene = SCENES[weather];
   const precip = PRECIP[weather];
-  const clipPath = clip(panes);
 
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      {/* Một tấm cảnh duy nhất chạy xuyên qua mọi ô kính để không còn cảm giác ảnh ghép. */}
-      <div
-        key={`scene-${weather}`}
-        className="absolute inset-0 animate-[fade-in_700ms_ease-out]"
-        style={{
-          clipPath,
-          backgroundImage: `url(${scene.image})`,
-          backgroundPosition: scene.position,
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          filter: scene.filter,
-        } as React.CSSProperties}
-      />
-
-      {/* Lớp không khí nối ánh sáng lạnh ngoài trời với ánh đèn ấm trong phòng. */}
-      <div
-        className="absolute inset-0"
-        style={{
-          clipPath,
-          background:
-            "radial-gradient(36% 48% at 86% 44%, oklch(0.72 0.105 67 / 17%), transparent 72%), linear-gradient(180deg, oklch(0.11 0.028 225 / 9%), oklch(0.08 0.018 260 / 28%))",
-          boxShadow: "inset 0 0 54px oklch(0.055 0.012 250 / 62%)",
-        }}
-      />
-
-      {precip && (
-        <div
-          className="absolute inset-0"
-          style={{
-            clipPath,
-            backgroundImage: precip.image,
-            backgroundSize: precip.size,
-            opacity: precip.opacity,
-            animation: `rain-fall ${precip.duration} linear infinite`,
-          }}
-        />
-      )}
-
-      {/* Phản chiếu cực nhẹ trên kính; khung cửa gốc vẫn là lớp nổi phía trước. */}
-      <div
-        className="absolute inset-0"
-        style={{
-          clipPath,
-          background:
-            "linear-gradient(116deg, oklch(0.94 0.018 215 / 7%) 0%, transparent 19%, transparent 57%, oklch(0.93 0.02 65 / 4%) 68%, transparent 78%)",
-        }}
-      />
+      {panes.map((pane, index) => {
+        const clipPath = clip(pane);
+        return (
+          <div key={index} className="contents">
+            {/* Mỗi ô chỉ cắt một phần của cùng tấm cảnh toàn sân khấu nên đường nét vẫn liền nhau. */}
+            <div
+              key={`scene-${weather}-${index}`}
+              className="absolute inset-0 animate-[fade-in_700ms_ease-out]"
+              style={{
+                clipPath,
+                backgroundImage: `url(${scene.image})`,
+                backgroundPosition: scene.position,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "cover",
+                filter: scene.filter,
+              } as React.CSSProperties}
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                clipPath,
+                background:
+                  "radial-gradient(36% 48% at 86% 44%, oklch(0.72 0.105 67 / 17%), transparent 72%), linear-gradient(180deg, oklch(0.11 0.028 225 / 9%), oklch(0.08 0.018 260 / 28%))",
+                boxShadow: "inset 0 0 54px oklch(0.055 0.012 250 / 62%)",
+              }}
+            />
+            {precip && (
+              <div
+                className="absolute inset-0"
+                style={{
+                  clipPath,
+                  backgroundImage: precip.image,
+                  backgroundSize: precip.size,
+                  opacity: precip.opacity,
+                  animation: `rain-fall ${precip.duration} linear infinite`,
+                }}
+              />
+            )}
+            <div
+              className="absolute inset-0"
+              style={{
+                clipPath,
+                background:
+                  "linear-gradient(116deg, oklch(0.94 0.018 215 / 7%) 0%, transparent 19%, transparent 57%, oklch(0.93 0.02 65 / 4%) 68%, transparent 78%)",
+              }}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 }
