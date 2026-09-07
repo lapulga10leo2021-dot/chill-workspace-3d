@@ -5,10 +5,8 @@ import { toast } from "sonner";
 import { Lamp, Loader2, LogOut, Music2, Settings2, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { signedUrl, useSession } from "@/lib/session";
-import { asWeather, useProfile, useUpdateProfile } from "@/lib/profile";
+import { useProfile, useUpdateProfile } from "@/lib/profile";
 import { getAmbient, type AmbientKind } from "@/lib/ambient";
-import { WEATHER_LABELS, type Weather } from "@/components/room/WeatherLayer";
-import { OutdoorView, type GlassPane } from "@/components/room/OutdoorView";
 import { RealtimeClock } from "@/components/room/RealtimeClock";
 import { Stopwatch } from "@/components/room/Stopwatch";
 import { Hotspot, RoomStage } from "@/components/room/RoomStage";
@@ -45,30 +43,6 @@ export const Route = createFileRoute("/_authenticated/desk")({
   component: DeskPage,
 });
 
-const WEATHERS: Weather[] = ["rain", "clear", "snow", "autumn", "night"];
-/** Ô kính lớn bên phải (vùng bấm để đổi thời tiết) */
-const WINDOW_AREA = { left: 76.6, top: 0, width: 19.5, height: 40 };
-/** Vùng kính thật theo phối cảnh khung cửa sổ trong ảnh phòng */
-const WINDOW_PANES: GlassPane[] = [
-  // ô kính lớn bên phải
-  {
-    points: [
-      [76.7, 0],
-      [96.3, 0],
-      [96.3, 50],
-      [76.7, 36],
-    ],
-  },
-  // ô kính nhỏ phía trên màn hình
-  {
-    points: [
-      [57.5, 0],
-      [72.6, 0],
-      [72.6, 21.5],
-      [57.5, 24],
-    ],
-  },
-];
 /** Kệ gỗ nhỏ phía trên thùng PC + đồng hồ điện tử đặt trên kệ */
 const SHELF_AREA = { left: 38.2, top: 24.2, width: 12.6, height: 1.6 };
 const CLOCK_AREA = { left: 40.4, top: 16.4, width: 8.4, height: 8 };
@@ -86,7 +60,6 @@ function DeskPage() {
   const [uploadingBg, setUploadingBg] = useState(false);
   const [bgUrl, setBgUrl] = useState<string | null>(null);
 
-  const weather = asWeather(profile?.outdoor_weather);
   const showClock = profile?.show_clock ?? true;
   const showStopwatch = profile?.show_stopwatch ?? false;
   const lightsOn = profile?.lights_on ?? true;
@@ -214,24 +187,6 @@ function DeskPage() {
               </SheetHeader>
 
               <div className="space-y-7 px-4 pb-10">
-                <section>
-                  <Label className="text-xs uppercase tracking-wider text-muted-foreground">
-                    Ngoài cửa sổ
-                  </Label>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {WEATHERS.map((w) => (
-                      <Button
-                        key={w}
-                        size="sm"
-                        variant={weather === w ? "default" : "secondary"}
-                        onClick={() => updateProfile.mutate({ outdoor_weather: w })}
-                      >
-                        {WEATHER_LABELS[w]}
-                      </Button>
-                    ))}
-                  </div>
-                </section>
-
                 <section className="space-y-4">
                   <Label className="text-xs uppercase tracking-wider text-muted-foreground">
                     Hiển thị
@@ -349,10 +304,6 @@ function DeskPage() {
                 className="absolute inset-0 size-full object-cover"
               />
             )}
-            {/* Khung cảnh ngoài trời trong ô cửa sổ */}
-            {!bgUrl && (
-              <OutdoorView weather={weather} panes={WINDOW_PANES} />
-            )}
             {/* Kệ gỗ nhỏ treo trên thùng PC (chỗ đặt đồng hồ) */}
             {showClock && (
               <div
@@ -413,14 +364,6 @@ function DeskPage() {
           onClick={() => void navigate({ to: "/music" })}
         />
         <Hotspot
-          label={`Cửa sổ — ${WEATHER_LABELS[weather]}`}
-          area={WINDOW_AREA}
-          onClick={() => {
-            const next = WEATHERS[(WEATHERS.indexOf(weather) + 1) % WEATHERS.length]!;
-            updateProfile.mutate({ outdoor_weather: next });
-          }}
-        />
-        <Hotspot
           label={lightsOn ? "Đèn bàn — Tắt đèn" : "Đèn bàn — Bật đèn"}
           area={{ left: 73.5, top: 33, width: 9, height: 14 }}
           onClick={() => updateProfile.mutate({ lights_on: !lightsOn })}
@@ -456,7 +399,7 @@ function DeskPage() {
 
       <p className="pointer-events-none absolute bottom-5 left-0 right-0 text-center text-[11px] text-muted-foreground">
         <Music2 className="mr-1 inline size-3" />
-        Bấm vào vật dụng: giá sách, màn hình, tai nghe, đồng hồ, cửa sổ, đèn, bàn phím
+        Bấm vào vật dụng: giá sách, màn hình, tai nghe, đồng hồ, đèn, bàn phím
         <Lamp className="ml-1 inline size-3" />
       </p>
     </main>
