@@ -24,7 +24,7 @@ export function RealtimeClock({ compact = false }: { compact?: boolean }) {
         <div
           role="timer"
           aria-label={`Đồng hồ điện tử ${hh}:${mm}`}
-          className="relative aspect-[2.28/1] w-full overflow-hidden rounded-[12%] border border-[oklch(0.45_0.07_55/52%)] [transform:rotateY(-4deg)_rotateX(1deg)]"
+          className="relative aspect-[2.28/1] w-full overflow-hidden rounded-[12%] border border-[oklch(0.45_0.07_55/52%)] [transform:rotateY(-4deg)_rotateX(1deg)_rotateZ(-3deg)]"
           style={{
             background:
               "repeating-linear-gradient(4deg, transparent 0 11%, oklch(0.12 0.025 42 / 24%) 11.5% 12.4%, transparent 13% 24%), linear-gradient(165deg, oklch(0.43 0.075 58) 0%, oklch(0.3 0.062 49) 52%, oklch(0.19 0.04 42) 100%)",
@@ -33,11 +33,11 @@ export function RealtimeClock({ compact = false }: { compact?: boolean }) {
           }}
         >
           <div className="absolute inset-0 bg-[linear-gradient(112deg,transparent_0_47%,oklch(0.82_0.08_72/7%)_54%,transparent_62%)]" />
-          <div className="relative flex h-full items-center justify-center pb-[2%] font-mono text-[clamp(0.42rem,0.72vw,0.82rem)] font-medium leading-none tabular-nums text-[oklch(0.86_0.15_79)] [text-shadow:0_0_4px_oklch(0.83_0.16_72/72%)]">
+          <div className="relative flex h-full items-center justify-center pb-[2%] font-mono text-[clamp(0.55rem,1vw,1.15rem)] font-medium leading-none tabular-nums text-[oklch(0.86_0.15_79)] [text-shadow:0_0_4px_oklch(0.83_0.16_72/72%)]">
             <span>{hh}</span>
             <span className="mx-[2px] animate-pulse opacity-75">:</span>
             <span>{mm}</span>
-            <span className="ml-[9%] text-[0.55em] opacity-80">{ss}</span>
+            <span className="ml-[5%] text-[0.55em] opacity-80">{ss}</span>
           </div>
         </div>
       </div>
