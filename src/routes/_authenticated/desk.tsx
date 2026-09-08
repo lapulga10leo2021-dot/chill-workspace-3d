@@ -43,8 +43,8 @@ export const Route = createFileRoute("/_authenticated/desk")({
   component: DeskPage,
 });
 
-/** Đồng hồ gỗ nhỏ đặt trực tiếp trên góc trái mặt bàn. */
-const CLOCK_AREA = { left: 36.2, top: 40.2, width: 9.2, height: 7.4 };
+/** Đồng hồ LED nhỏ gọn, để ngay trước tai nghe. */
+const CLOCK_AREA = { left: 67.5, top: 57.5, width: 6.5, height: 5.5 };
 
 function DeskPage() {
   const { user } = useSession();
