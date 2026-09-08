@@ -33,7 +33,7 @@ export function RealtimeClock({ compact = false }: { compact?: boolean }) {
           }}
         >
           <div className="absolute inset-0 bg-[linear-gradient(112deg,transparent_0_47%,oklch(0.82_0.08_72/7%)_54%,transparent_62%)]" />
-          <div className="relative flex h-full items-center justify-center pb-[2%] font-mono text-[clamp(0.58rem,1.1vw,1.05rem)] font-medium leading-none tabular-nums text-[oklch(0.86_0.15_79)] [text-shadow:0_0_4px_oklch(0.83_0.16_72/72%)]">
+          <div className="relative flex h-full items-center justify-center pb-[2%] font-mono text-[clamp(0.42rem,0.72vw,0.82rem)] font-medium leading-none tabular-nums text-[oklch(0.86_0.15_79)] [text-shadow:0_0_4px_oklch(0.83_0.16_72/72%)]">
             <span>{hh}</span>
             <span className="mx-[2px] animate-pulse opacity-75">:</span>
             <span>{mm}</span>
