@@ -24,7 +24,7 @@ export function RealtimeClock({ compact = false }: { compact?: boolean }) {
         <div
           role="timer"
           aria-label={`Đồng hồ điện tử ${hh}:${mm}`}
-          className="relative aspect-[2.28/1] w-full overflow-hidden rounded-[12%] border border-[oklch(0.45_0.07_55/52%)] [transform:rotateY(-4deg)_rotateX(1deg)_rotateZ(-2deg)]"
+          className="relative aspect-[2.28/1] w-full overflow-hidden rounded-[12%] border border-[oklch(0.45_0.07_55/52%)] [transform:rotateY(-4deg)_rotateX(1deg)]"
           style={{
             background:
               "repeating-linear-gradient(4deg, transparent 0 11%, oklch(0.12 0.025 42 / 24%) 11.5% 12.4%, transparent 13% 24%), linear-gradient(165deg, oklch(0.43 0.075 58) 0%, oklch(0.3 0.062 49) 52%, oklch(0.19 0.04 42) 100%)",
